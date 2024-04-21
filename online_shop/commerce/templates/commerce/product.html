@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>OnlineShop</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .text-decoration-none:hover {
+            font-weight: bold !important;
+        }
+        .category {
+            padding-left: 10px;
+            margin-bottom: 10px;
+            color: white;
+        }
+        .product-card {
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+            height: 300px;
+            color: black;
+        }
+        .product-card:hover {
+            transform: scale(1.05);
+            cursor: pointer;
+        }
+        .product-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .product-card p {
+            margin-bottom: 0;
+        }
+        .footer {
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">OnlineShop</a>
+        <div>
+            {% for c in categories %}
+                <a href="#" class="text-decoration-none"><span class="category">{{ c }}</span></a>
+            {% endfor %}
+        </div>
+    </nav>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-4 offset-md-4">
+                <div class="product-card p-3">
+                    <img src="{{ product.photo.url }}" alt="{{ product.name }}">
+                    <p class="font-weight-bold ">{{ product.name }}</p>
+                    <p>{{ product.description }}</p>
+                    <p><b>Available sizes:</b> {{ product.available_sizes }}</p>
+                    <button class="btn btn-primary">Add to Cart</button>
+                    <button class="btn btn-danger">&#10084; Add to Wishlist</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="mt-4 bg-dark text-white pt-4">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <p><b>Контактная информация</b></p>
+                    <p>Телефон: +89207872383</p>
+                    <p>Email: online_shop@gmail.com</p>
+                </div>
+                <div class="col">
+                    <p><b>Адрес</b></p>
+                    <p>Санкт-Петербург, Улица Иванова, 5</p>
+                </div>
+                <div class="col">
+                    <p><b>График работы</b></p>
+                    <p>Понедельник - Пятница: 9:00 - 18:00</p>
+                    <p>Суббота - Воскресенье: Выходной</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
