@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3" id="sidebar">
+            <div class="sidebar">
+                <p><b>Упорядочить по:</b></p>
+                <div class="btn-group">
+                    <a href="?sort=price_asc" class="btn btn-primary">Возрастанию цены</a>
+                    <a href="?sort=price_desc" class="btn btn-primary">Убыванию цены</a>
+                    <a href="?sort=date" class="btn btn-primary">Новизне</a>
+                </div>
+                <ul class="list-unstyled">
+                    {% for s in subcategories %}
+                    <li>
+                        <a href="/commerce/categories/{{cat_selected}}/{{s.slug}}/"
+                           class="subcategory text-decoration-none">
+                            {{ s }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="row">
+                {% for p in products %}
+                    <div class="col-md-4">
+                        <a href="{{ p.get_absolute_url }}">
+                            <div class="product-card p-3">
+                                <img src="{{ p.photo.url }}" alt="{{ p.name }}">
+                                <p class="font-weight-bold ">{{ p.name }}</p>
+                                <p>{{ p.price }}</p>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

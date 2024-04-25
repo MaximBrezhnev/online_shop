@@ -7,6 +7,7 @@ from online_shop import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("commerce/", include("commerce.urls")),
+    path("users/", include("users.urls", namespace="users")),
 ]
 
 if settings.DEBUG:

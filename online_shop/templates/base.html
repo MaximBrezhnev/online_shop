@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>OnlineShop</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'commerce/css/styles.css' %}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-dark">
+        <a class="navbar-brand" href="/commerce">OnlineShop</a>
+        <div>
+            {% for c in categories %}
+                <a href="{{ c.get_absolute_url }}"><span class="category">{{ c }}</span></a>
+            {% endfor %}
+        </div>
+        <div class="col-md-3 text-right">
+            <a href="{% url 'search' %}"><i class="fas fa-search"></i></a>
+            <a href="#"><i class="fas fa-shopping-cart"></i></a>
+            <a href="{% url 'users:login' %}">Войти</a>
+            <a href="#"><i class="fas fa-heart"></i></a>
+        </div>
+    </nav>
+
+    {% block content %}
+    {% endblock %}
+
+    <footer class="mt-4 bg-dark text-white pt-4">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <p><b>Контактная информация</b></p>
+                    <p>Телефон: +89207872383</p>
+                    <p>Email: online_shop@gmail.com</p>
+                </div>
+                <div class="col">
+                    <p><b>Адрес</b></p>
+                    <p>Санкт-Петербург, Улица Иванова, 5</p>
+                </div>
+                <div class="col">
+                    <p><b>График работы</b></p>
+                    <p>Понедельник - Пятница: 9:00 - 18:00</p>
+                    <p>Суббота - Воскресенье: Выходной</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

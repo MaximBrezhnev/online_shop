@@ -1,0 +1,1741 @@
+[
+{
+  "model": "admin.logentry",
+  "pk": 1,
+  "fields": {
+    "action_time": "2024-04-20T16:52:05.079Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "1",
+    "object_repr": "Пиджак",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 2,
+  "fields": {
+    "action_time": "2024-04-20T16:56:05.904Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "2",
+    "object_repr": "Брюки",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 3,
+  "fields": {
+    "action_time": "2024-04-20T16:58:09.784Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "3",
+    "object_repr": "Футболка поло",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 4,
+  "fields": {
+    "action_time": "2024-04-20T17:01:01.553Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "4",
+    "object_repr": "Кроссовки Nike",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 5,
+  "fields": {
+    "action_time": "2024-04-20T17:02:52.146Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "5",
+    "object_repr": "Лоферы",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 6,
+  "fields": {
+    "action_time": "2024-04-20T17:04:29.661Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "6",
+    "object_repr": "Тапки домашние",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 7,
+  "fields": {
+    "action_time": "2024-04-20T17:07:06.121Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "7",
+    "object_repr": "Часы Casio",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 8,
+  "fields": {
+    "action_time": "2024-04-20T17:08:47.685Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "8",
+    "object_repr": "Ремень Guess",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 9,
+  "fields": {
+    "action_time": "2024-04-20T17:10:51.302Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "9",
+    "object_repr": "Цепочка серебряная",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 10,
+  "fields": {
+    "action_time": "2024-04-20T17:14:52.077Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "10",
+    "object_repr": "Кроссовки NewBalance",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 11,
+  "fields": {
+    "action_time": "2024-04-20T17:16:08.916Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "11",
+    "object_repr": "Туфли на каблуке",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 12,
+  "fields": {
+    "action_time": "2024-04-20T17:18:45.511Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "12",
+    "object_repr": "Кроссовки Adidas",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 13,
+  "fields": {
+    "action_time": "2024-04-20T17:21:10.109Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "13",
+    "object_repr": "Платье розовое",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 14,
+  "fields": {
+    "action_time": "2024-04-20T17:22:32.891Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "14",
+    "object_repr": "Джинсы с высокой посадкой",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 15,
+  "fields": {
+    "action_time": "2024-04-20T17:24:00.922Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "15",
+    "object_repr": "Кофта Le",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 16,
+  "fields": {
+    "action_time": "2024-04-20T17:28:01.682Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "16",
+    "object_repr": "Детские кроссовки Nike",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 17,
+  "fields": {
+    "action_time": "2024-04-20T17:29:09.326Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "17",
+    "object_repr": "Желтые детские тапочки",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 18,
+  "fields": {
+    "action_time": "2024-04-20T17:30:29.982Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "18",
+    "object_repr": "Ботинки детские",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 19,
+  "fields": {
+    "action_time": "2024-04-20T17:31:31.537Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "19",
+    "object_repr": "Детский свитер",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 20,
+  "fields": {
+    "action_time": "2024-04-20T17:33:13.671Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "20",
+    "object_repr": "Детский комбинезон",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 21,
+  "fields": {
+    "action_time": "2024-04-20T17:34:21.966Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "21",
+    "object_repr": "Детская шапка",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 22,
+  "fields": {
+    "action_time": "2024-04-20T17:36:31.236Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "22",
+    "object_repr": "Детские часы с единорогом",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 23,
+  "fields": {
+    "action_time": "2024-04-20T17:37:42.164Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "23",
+    "object_repr": "Детский браслет",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 24,
+  "fields": {
+    "action_time": "2024-04-20T17:40:46.318Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "24",
+    "object_repr": "Детский чехол на телефон",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 57,
+  "fields": {
+    "action_time": "2024-04-21T04:46:14.733Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "57",
+    "object_repr": "Часы Tissot",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 58,
+  "fields": {
+    "action_time": "2024-04-21T04:47:55.039Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "58",
+    "object_repr": "Сумка Bloy Back",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 59,
+  "fields": {
+    "action_time": "2024-04-21T04:55:24.396Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "59",
+    "object_repr": "Серебряный браслет",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 60,
+  "fields": {
+    "action_time": "2024-04-21T05:19:36.638Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "3",
+    "object_repr": "Футболка поло",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Photo\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 61,
+  "fields": {
+    "action_time": "2024-04-21T05:20:33.637Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "9",
+    "object_repr": "Цепочка серебряная",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Photo\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 62,
+  "fields": {
+    "action_time": "2024-04-21T16:51:35.646Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "1",
+    "object_repr": "Пиджак",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Photo\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 63,
+  "fields": {
+    "action_time": "2024-04-22T12:03:58.921Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "1",
+    "object_repr": "Мужчинам",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Slug\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 64,
+  "fields": {
+    "action_time": "2024-04-22T12:04:28.169Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "2",
+    "object_repr": "Женщинам",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Slug\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 65,
+  "fields": {
+    "action_time": "2024-04-22T12:04:57.633Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "3",
+    "object_repr": "Детям",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Slug\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 66,
+  "fields": {
+    "action_time": "2024-04-22T12:07:00.801Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "1",
+    "object_repr": "Одежда",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Slug\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 67,
+  "fields": {
+    "action_time": "2024-04-22T12:07:20.258Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "2",
+    "object_repr": "Обувь",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Slug\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 68,
+  "fields": {
+    "action_time": "2024-04-22T12:07:35.504Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "3",
+    "object_repr": "Аксессуары",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Slug\"]}}]"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 1,
+  "fields": {
+    "name": "Can add log entry",
+    "content_type": 1,
+    "codename": "add_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 2,
+  "fields": {
+    "name": "Can change log entry",
+    "content_type": 1,
+    "codename": "change_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 3,
+  "fields": {
+    "name": "Can delete log entry",
+    "content_type": 1,
+    "codename": "delete_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 4,
+  "fields": {
+    "name": "Can view log entry",
+    "content_type": 1,
+    "codename": "view_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 5,
+  "fields": {
+    "name": "Can add permission",
+    "content_type": 2,
+    "codename": "add_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 6,
+  "fields": {
+    "name": "Can change permission",
+    "content_type": 2,
+    "codename": "change_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 7,
+  "fields": {
+    "name": "Can delete permission",
+    "content_type": 2,
+    "codename": "delete_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 8,
+  "fields": {
+    "name": "Can view permission",
+    "content_type": 2,
+    "codename": "view_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 9,
+  "fields": {
+    "name": "Can add group",
+    "content_type": 3,
+    "codename": "add_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 10,
+  "fields": {
+    "name": "Can change group",
+    "content_type": 3,
+    "codename": "change_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 11,
+  "fields": {
+    "name": "Can delete group",
+    "content_type": 3,
+    "codename": "delete_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 12,
+  "fields": {
+    "name": "Can view group",
+    "content_type": 3,
+    "codename": "view_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 13,
+  "fields": {
+    "name": "Can add user",
+    "content_type": 4,
+    "codename": "add_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 14,
+  "fields": {
+    "name": "Can change user",
+    "content_type": 4,
+    "codename": "change_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 15,
+  "fields": {
+    "name": "Can delete user",
+    "content_type": 4,
+    "codename": "delete_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 16,
+  "fields": {
+    "name": "Can view user",
+    "content_type": 4,
+    "codename": "view_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 17,
+  "fields": {
+    "name": "Can add content type",
+    "content_type": 5,
+    "codename": "add_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 18,
+  "fields": {
+    "name": "Can change content type",
+    "content_type": 5,
+    "codename": "change_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 19,
+  "fields": {
+    "name": "Can delete content type",
+    "content_type": 5,
+    "codename": "delete_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 20,
+  "fields": {
+    "name": "Can view content type",
+    "content_type": 5,
+    "codename": "view_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 21,
+  "fields": {
+    "name": "Can add session",
+    "content_type": 6,
+    "codename": "add_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 22,
+  "fields": {
+    "name": "Can change session",
+    "content_type": 6,
+    "codename": "change_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 23,
+  "fields": {
+    "name": "Can delete session",
+    "content_type": 6,
+    "codename": "delete_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 24,
+  "fields": {
+    "name": "Can view session",
+    "content_type": 6,
+    "codename": "view_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 25,
+  "fields": {
+    "name": "Can add category",
+    "content_type": 7,
+    "codename": "add_category"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 26,
+  "fields": {
+    "name": "Can change category",
+    "content_type": 7,
+    "codename": "change_category"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 27,
+  "fields": {
+    "name": "Can delete category",
+    "content_type": 7,
+    "codename": "delete_category"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 28,
+  "fields": {
+    "name": "Can view category",
+    "content_type": 7,
+    "codename": "view_category"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 29,
+  "fields": {
+    "name": "Can add subcategory",
+    "content_type": 8,
+    "codename": "add_subcategory"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 30,
+  "fields": {
+    "name": "Can change subcategory",
+    "content_type": 8,
+    "codename": "change_subcategory"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 31,
+  "fields": {
+    "name": "Can delete subcategory",
+    "content_type": 8,
+    "codename": "delete_subcategory"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 32,
+  "fields": {
+    "name": "Can view subcategory",
+    "content_type": 8,
+    "codename": "view_subcategory"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 33,
+  "fields": {
+    "name": "Can add product",
+    "content_type": 9,
+    "codename": "add_product"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 34,
+  "fields": {
+    "name": "Can change product",
+    "content_type": 9,
+    "codename": "change_product"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 35,
+  "fields": {
+    "name": "Can delete product",
+    "content_type": 9,
+    "codename": "delete_product"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 36,
+  "fields": {
+    "name": "Can view product",
+    "content_type": 9,
+    "codename": "view_product"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 37,
+  "fields": {
+    "name": "Can add size",
+    "content_type": 10,
+    "codename": "add_size"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 38,
+  "fields": {
+    "name": "Can change size",
+    "content_type": 10,
+    "codename": "change_size"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 39,
+  "fields": {
+    "name": "Can delete size",
+    "content_type": 10,
+    "codename": "delete_size"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 40,
+  "fields": {
+    "name": "Can view size",
+    "content_type": 10,
+    "codename": "view_size"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 41,
+  "fields": {
+    "name": "Can add size and number",
+    "content_type": 10,
+    "codename": "add_sizeandnumber"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 42,
+  "fields": {
+    "name": "Can change size and number",
+    "content_type": 10,
+    "codename": "change_sizeandnumber"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 43,
+  "fields": {
+    "name": "Can delete size and number",
+    "content_type": 10,
+    "codename": "delete_sizeandnumber"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 44,
+  "fields": {
+    "name": "Can view size and number",
+    "content_type": 10,
+    "codename": "view_sizeandnumber"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 45,
+  "fields": {
+    "name": "Can add user",
+    "content_type": 10,
+    "codename": "add_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 46,
+  "fields": {
+    "name": "Can change user",
+    "content_type": 10,
+    "codename": "change_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 47,
+  "fields": {
+    "name": "Can delete user",
+    "content_type": 10,
+    "codename": "delete_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 48,
+  "fields": {
+    "name": "Can view user",
+    "content_type": 10,
+    "codename": "view_user"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "4ji7hkcmlm5ac3d8nstppcjbpy35pwyl",
+  "fields": {
+    "session_data": "e30:1rzcgs:B0KFXhD7zq8xSObJgbYFjyvuhJDQJU3za4U1Je1QmkM",
+    "expire_date": "2024-05-08T13:29:38.977Z"
+  }
+},
+{
+  "model": "commerce.product",
+  "pk": 1,
+  "fields": {
+    "name": "Пиджак",
+    "slug": "pidzhak",
+    "description": "ПИДЖАК МУЖСКОЙ, КЛАССИЧЕСКИЙ КРОЙ (СИЛУЭТ), REGULAR FIT, ST1116, GREIFF",
+    "price": "15000.00",
+    "photo": "products/2024/04/21/mc1.jpg",
+    "created_at": "2024-04-20T16:52:05.072Z",
+    "category": 1,
+    "subcategory": 1
+  }
+},
+{
+  "model": "commerce.product",
+  "pk": 2,
+  "fields": {
+    "name": "Брюки",
+    "slug": "briuki",
+    "description": "Стильные мужские брюки с удобным кроем и изысканными деталями - идеальный выбор для элегантного и комфортного образа.",
+    "price": "4000.00",
+    "photo": "products/2024/04/20/mc2jpg.jpg",
+    "created_at": "2024-04-20T16:56:05.899Z",
+    "category": 1,
+    "subcategory": 1
+  }
+},
+{
+  "model": "commerce.product",
+  "pk": 3,
+  "fields": {
+    "name": "Футболка поло",
+    "slug": "futbolka-polo",
+    "description": "Эта мужская футболка поло сочетает в себе классический стиль и комфортную посадку, идеально подходящую для повседневной носки или спортивных мероприятий.",
+    "price": "3200.00",
+    "photo": "products/2024/04/21/mc3.jpeg",
+    "created_at": "2024-04-20T16:58:09.782Z",
+    "category": 1,
+    "subcategory": 1
+  }
+},
+{
+  "model": "commerce.product",
+  "pk": 4,
+  "fields": {
+    "name": "Кроссовки Nike",
+    "slug": "krossovki-nike",
+    "description": "Эти кроссовки предлагают современный дизайн, исключительный комфорт и высокую производительность для активного образа жизни.",
+    "price": "8700.00",
+    "photo": "products/2024/04/20/ms1.jpg",
+    "created_at": "2024-04-20T17:01:01.550Z",
+    "category": 1,
+    "subcategory": 2
+  }
+},
+{
+  "model": "commerce.product",
+  "pk": 5,
+  "fields": {
+    "name": "Лоферы",
+    "slug": "lofery",
+    "description": "Эти мужские лоферы идеально подчеркивают ваш стиль и обеспечивают удобство на каждом шагу, добавляя элегантности вашему образу.",
+    "price": "10000.00",
+    "photo": "products/2024/04/20/ms2.jpg",
+    "created_at": "2024-04-20T17:02:52.144Z",
+    "category": 1,
+    "subcategory": 2
+  }
+},
+{
+  "model": "commerce.product",
+  "pk": 6,
+  "fields": {
+    "name": "Тапки домашние",
+    "slug": "tapki-domashnie",
+    "description": "Эти домашние тапочки обеспечат вашим ногам уют и комфорт, позволяя расслабиться и насладиться уютом вашего дома после долгого дня.",
+    "price": "799.00",
+    "photo": "products/2024/04/20/ms3.jpeg",
+    "created_at": "2024-04-20T17:04:29.658Z",
+    "category": 1,
+    "subcategory": 2
+  }
+},
+{
+  "model": "commerce.product",
+  "pk": 7,
+  "fields": {
+    "name": "Часы Casio",
+    "slug": "chasy-casio",
+    "description": "Эти часы Casio воплощают в себе современный стиль и надежность, предлагая точное время и функциональность для активного образа жизни.",
+    "price": "25000.00",
+    "photo": "products/2024/04/20/ma1jpg.jpg",
+    "created_at": "2024-04-20T17:07:06.119Z",
+    "category": 1,
+    "subcategory": 3
+  }
+},
+{
+  "model": "commerce.product",
+  "pk": 8,
+  "fields": {
+    "name": "Ремень Guess",
+    "slug": "remen-guess",
+    "description": "Этот ремень - идеальное дополнение к вашему образу, придавая ему стильный акцент и обеспечивая надежную поддержку.",
+    "price": "2200.00",
+    "photo": "products/2024/04/20/ma2.jpg",
+    "created_at": "2024-04-20T17:08:47.683Z",
+    "category": 1,
+    "subcategory": 3
+  }
+},
+{
+  "model": "commerce.product",
+  "pk": 9,
+  "fields": {
+    "name": "Цепочка серебряная",
+    "slug": "tsepochka-serebrianaia",
+    "description": "Эта мужская цепочка является элегантным аксессуаром, который придаст вашему образу изысканности и стиля.",
+    "price": "6890.00",
+    "photo": "products/2024/04/21/ma3.jpg",
+    "created_at": "2024-04-20T17:10:51.300Z",
+    "category": 1,
+    "subcategory": 3
+  }
+},
+{
+  "model": "commerce.product",
+  "pk": 10,
+  "fields": {
+    "name": "Кроссовки NewBalance",
+    "slug": "krossovki-newbalance",
+    "description": "Эти кроссовки New Balance сочетают в себе стильный дизайн и высокую функциональность, обеспечивая комфорт и поддержку во время занятий спортом или повседневных прогулок.",
+    "price": "12100.00",
+    "photo": "products/2024/04/20/ws1jpg.jpg",
+    "created_at": "2024-04-20T17:14:52.074Z",
+    "category": 2,
+    "subcategory": 2
+  }
+},
+{
+  "model": "commerce.product",
+  "pk": 11,
+  "fields": {
+    "name": "Туфли на каблуке",
+    "slug": "tufli-na-kabluke",
+    "description": "Эти туфли на каблуке являются идеальным сочетанием элегантности и комфорта, подчеркивая ваш стиль и добавляя изящества вашему образу.",
+    "price": "5890.00",
+    "photo": "products/2024/04/20/ws2.jpg",
+    "created_at": "2024-04-20T17:16:08.913Z",
+    "category": 2,
+    "subcategory": 2
+  }
+},
+{
+  "model": "commerce.product",
+  "pk": 12,
+  "fields": {
+    "name": "Кроссовки Adidas",
+    "slug": "krossovki-adidas",
+    "description": "Эти кроссовки Adidas - идеальный выбор для тех, кто ценит стиль, комфорт и высокое качество. Они обеспечивают отличную поддержку и амортизацию для вашего активного образа жизни.",
+    "price": "2880.00",
+    "photo": "products/2024/04/20/ws3.jpg",
+    "created_at": "2024-04-20T17:18:45.508Z",
+    "category": 2,
+    "subcategory": 2
+  }
+},
+{
+  "model": "commerce.product",
+  "pk": 13,
+  "fields": {
+    "name": "Платье розовое",
+    "slug": "plate-rozovoe",
+    "description": "Это платье - идеальное сочетание элегантности и комфорта, придающее вашему образу шарм и изысканность.",
+    "price": "3590.00",
+    "photo": "products/2024/04/20/wc1.jpg",
+    "created_at": "2024-04-20T17:21:10.107Z",
+    "category": 2,
+    "subcategory": 1
+  }
+},
+{
+  "model": "commerce.product",
+  "pk": 14,
+  "fields": {
+    "name": "Джинсы с высокой посадкой",
+    "slug": "dzhinsy-s-vysokoi-posadkoi",
+    "description": "Эти джинсы с высокой посадкой созданы для комфорта и стиля, обеспечивая отличную посадку и подчеркивая вашу фигуру.",
+    "price": "2700.00",
+    "photo": "products/2024/04/20/wc3.jpg",
+    "created_at": "2024-04-20T17:22:32.889Z",
+    "category": 2,
+    "subcategory": 1
+  }
+},
+{
+  "model": "commerce.product",
+  "pk": 15,
+  "fields": {
+    "name": "Кофта Le",
+    "slug": "kofta-le",
+    "description": "Эта кофта от бренда Le - идеальное сочетание стиля и комфорта, добавляющее вашему образу неповторимый шарм и элегантность.",
+    "price": "9890.00",
+    "photo": "products/2024/04/20/wc2.jpg",
+    "created_at": "2024-04-20T17:24:00.919Z",
+    "category": 2,
+    "subcategory": 1
+  }
+},
+{
+  "model": "commerce.product",
+  "pk": 16,
+  "fields": {
+    "name": "Детские кроссовки Nike",
+    "slug": "detskie-krossovki-nike",
+    "description": "Детские кроссовки от Nike",
+    "price": "6770.00",
+    "photo": "products/2024/04/20/cs1.jpg",
+    "created_at": "2024-04-20T17:28:01.679Z",
+    "category": 3,
+    "subcategory": 2
+  }
+},
+{
+  "model": "commerce.product",
+  "pk": 17,
+  "fields": {
+    "name": "Желтые детские тапочки",
+    "slug": "zheltye-detskie-tapochki",
+    "description": "Эти желтые детские тапочки - яркое и уютное дополнение к гардеробу вашего малыша, придавая его образу игривость и комфорт.",
+    "price": "2000.00",
+    "photo": "products/2024/04/20/cs2.jpg",
+    "created_at": "2024-04-20T17:29:09.324Z",
+    "category": 3,
+    "subcategory": 2
+  }
+},
+{
+  "model": "commerce.product",
+  "pk": 18,
+  "fields": {
+    "name": "Ботинки детские",
+    "slug": "botinki-detskie",
+    "description": "Эти детские ботинки обеспечивают стиль, комфорт и надежную поддержку, защищая маленькие ножки и подчеркивая их индивидуальный стиль.",
+    "price": "1700.00",
+    "photo": "products/2024/04/20/cs3.jpg",
+    "created_at": "2024-04-20T17:30:29.979Z",
+    "category": 3,
+    "subcategory": 2
+  }
+},
+{
+  "model": "commerce.product",
+  "pk": 19,
+  "fields": {
+    "name": "Детский свитер",
+    "slug": "detskii-sviter",
+    "description": "Этот детский свитер - идеальное сочетание тепла, комфорта и стиля, обеспечивая малышу уют в любое время года и подчеркивая его милый образ.",
+    "price": "3000.00",
+    "photo": "products/2024/04/20/cc1.jpg",
+    "created_at": "2024-04-20T17:31:31.535Z",
+    "category": 3,
+    "subcategory": 1
+  }
+},
+{
+  "model": "commerce.product",
+  "pk": 20,
+  "fields": {
+    "name": "Детский комбинезон",
+    "slug": "detskii-kombinezon",
+    "description": "Этот детский комбинезон сочетает в себе удобство и стиль, обеспечивая малышу защиту от холода и комфорт во время активных игр и прогулок.",
+    "price": "4500.00",
+    "photo": "products/2024/04/20/cc2.jpg",
+    "created_at": "2024-04-20T17:33:13.668Z",
+    "category": 3,
+    "subcategory": 1
+  }
+},
+{
+  "model": "commerce.product",
+  "pk": 21,
+  "fields": {
+    "name": "Детская шапка",
+    "slug": "detskaia-shapka",
+    "description": "Эта детская шапка обеспечивает тепло и комфорт в холодные дни, при этом добавляя яркий акцент к образу вашего ребенка.",
+    "price": "1280.00",
+    "photo": "products/2024/04/20/сс3.jpg",
+    "created_at": "2024-04-20T17:34:21.963Z",
+    "category": 3,
+    "subcategory": 1
+  }
+},
+{
+  "model": "commerce.product",
+  "pk": 22,
+  "fields": {
+    "name": "Детские часы с единорогом",
+    "slug": "detskie-chasy-s-edinorogom",
+    "description": "Эти детские часы с изображением единорога не только показывают время, но и добавляют веселья и магии в повседневную жизнь вашего ребенка.",
+    "price": "1100.00",
+    "photo": "products/2024/04/20/ca1.jpg",
+    "created_at": "2024-04-20T17:36:31.233Z",
+    "category": 3,
+    "subcategory": 3
+  }
+},
+{
+  "model": "commerce.product",
+  "pk": 23,
+  "fields": {
+    "name": "Детский браслет",
+    "slug": "detskii-braslet",
+    "description": "Этот детский браслет - прекрасное украшение, которое подчеркнет индивидуальность вашего малыша и добавит игривости к его образу.",
+    "price": "800.00",
+    "photo": "products/2024/04/20/ca2.jpg",
+    "created_at": "2024-04-20T17:37:42.161Z",
+    "category": 3,
+    "subcategory": 3
+  }
+},
+{
+  "model": "commerce.product",
+  "pk": 24,
+  "fields": {
+    "name": "Детский чехол на телефон",
+    "slug": "detskii-chekhol-na-telefon",
+    "description": "Яркий и прочный детский чехол на телефон обеспечивает надежную защиту смартфона от повреждений и добавляет игривости к его облику.",
+    "price": "599.00",
+    "photo": "products/2024/04/20/ca3.jpg",
+    "created_at": "2024-04-20T17:40:46.316Z",
+    "category": 3,
+    "subcategory": 3
+  }
+},
+{
+  "model": "commerce.product",
+  "pk": 57,
+  "fields": {
+    "name": "Часы Tissot",
+    "slug": "chasy-tissot",
+    "description": "Часы Tissot – это элегантное сочетание высокоточной швейцарской мастерской и стильного дизайна, превосходное слияние классики и инноваций.",
+    "price": "60000.00",
+    "photo": "products/2024/04/21/wa1.jpg",
+    "created_at": "2024-04-21T04:46:14.725Z",
+    "category": 2,
+    "subcategory": 3
+  }
+},
+{
+  "model": "commerce.product",
+  "pk": 58,
+  "fields": {
+    "name": "Сумка Bloy Back",
+    "slug": "sumka-bloy-back",
+    "description": "Сумка Bloy Black - это стильный аксессуар с простым, но элегантным дизайном, созданный для комфортной и практичной повседневной носки.",
+    "price": "23800.00",
+    "photo": "products/2024/04/21/wa2.jpg",
+    "created_at": "2024-04-21T04:47:55.034Z",
+    "category": 2,
+    "subcategory": 3
+  }
+},
+{
+  "model": "commerce.product",
+  "pk": 59,
+  "fields": {
+    "name": "Серебряный браслет",
+    "slug": "serebrianyi-braslet",
+    "description": "Серебряный браслет - изысканный аксессуар, который придает вашему образу блеск и элегантность, идеальный выбор для завершения любого стиля.",
+    "price": "11400.00",
+    "photo": "products/2024/04/21/wa3.jpg",
+    "created_at": "2024-04-21T04:55:24.391Z",
+    "category": 2,
+    "subcategory": 3
+  }
+},
+{
+  "model": "commerce.category",
+  "pk": 1,
+  "fields": {
+    "name": "Мужчинам",
+    "slug": "muzhchinam"
+  }
+},
+{
+  "model": "commerce.category",
+  "pk": 2,
+  "fields": {
+    "name": "Женщинам",
+    "slug": "zhenschinam"
+  }
+},
+{
+  "model": "commerce.category",
+  "pk": 3,
+  "fields": {
+    "name": "Детям",
+    "slug": "detyam"
+  }
+},
+{
+  "model": "commerce.subcategory",
+  "pk": 1,
+  "fields": {
+    "name": "Одежда",
+    "slug": "odezhda"
+  }
+},
+{
+  "model": "commerce.subcategory",
+  "pk": 2,
+  "fields": {
+    "name": "Обувь",
+    "slug": "obuv"
+  }
+},
+{
+  "model": "commerce.subcategory",
+  "pk": 3,
+  "fields": {
+    "name": "Аксессуары",
+    "slug": "aksessuary"
+  }
+},
+{
+  "model": "commerce.sizeandnumber",
+  "pk": 1,
+  "fields": {
+    "size": "48",
+    "number": 3,
+    "product": 1
+  }
+},
+{
+  "model": "commerce.sizeandnumber",
+  "pk": 2,
+  "fields": {
+    "size": "50",
+    "number": 4,
+    "product": 1
+  }
+},
+{
+  "model": "commerce.sizeandnumber",
+  "pk": 3,
+  "fields": {
+    "size": "48",
+    "number": 5,
+    "product": 2
+  }
+},
+{
+  "model": "commerce.sizeandnumber",
+  "pk": 4,
+  "fields": {
+    "size": "50",
+    "number": 4,
+    "product": 2
+  }
+},
+{
+  "model": "commerce.sizeandnumber",
+  "pk": 5,
+  "fields": {
+    "size": "48",
+    "number": 5,
+    "product": 5
+  }
+},
+{
+  "model": "commerce.sizeandnumber",
+  "pk": 6,
+  "fields": {
+    "size": "50",
+    "number": 4,
+    "product": 5
+  }
+},
+{
+  "model": "commerce.sizeandnumber",
+  "pk": 7,
+  "fields": {
+    "size": "48",
+    "number": 5,
+    "product": 6
+  }
+},
+{
+  "model": "commerce.sizeandnumber",
+  "pk": 8,
+  "fields": {
+    "size": "50",
+    "number": 4,
+    "product": 6
+  }
+},
+{
+  "model": "commerce.sizeandnumber",
+  "pk": 9,
+  "fields": {
+    "size": "48",
+    "number": 5,
+    "product": 10
+  }
+},
+{
+  "model": "commerce.sizeandnumber",
+  "pk": 10,
+  "fields": {
+    "size": "50",
+    "number": 4,
+    "product": 10
+  }
+},
+{
+  "model": "commerce.sizeandnumber",
+  "pk": 11,
+  "fields": {
+    "size": "48",
+    "number": 5,
+    "product": 11
+  }
+},
+{
+  "model": "commerce.sizeandnumber",
+  "pk": 12,
+  "fields": {
+    "size": "50",
+    "number": 4,
+    "product": 11
+  }
+},
+{
+  "model": "commerce.sizeandnumber",
+  "pk": 13,
+  "fields": {
+    "size": "48",
+    "number": 5,
+    "product": 12
+  }
+},
+{
+  "model": "commerce.sizeandnumber",
+  "pk": 14,
+  "fields": {
+    "size": "50",
+    "number": 4,
+    "product": 12
+  }
+},
+{
+  "model": "commerce.sizeandnumber",
+  "pk": 15,
+  "fields": {
+    "size": "48",
+    "number": 5,
+    "product": 13
+  }
+},
+{
+  "model": "commerce.sizeandnumber",
+  "pk": 16,
+  "fields": {
+    "size": "50",
+    "number": 4,
+    "product": 13
+  }
+},
+{
+  "model": "commerce.sizeandnumber",
+  "pk": 17,
+  "fields": {
+    "size": "48",
+    "number": 5,
+    "product": 14
+  }
+},
+{
+  "model": "commerce.sizeandnumber",
+  "pk": 18,
+  "fields": {
+    "size": "50",
+    "number": 4,
+    "product": 14
+  }
+},
+{
+  "model": "commerce.sizeandnumber",
+  "pk": 19,
+  "fields": {
+    "size": "48",
+    "number": 5,
+    "product": 15
+  }
+},
+{
+  "model": "commerce.sizeandnumber",
+  "pk": 20,
+  "fields": {
+    "size": "50",
+    "number": 4,
+    "product": 15
+  }
+},
+{
+  "model": "commerce.sizeandnumber",
+  "pk": 21,
+  "fields": {
+    "size": "48",
+    "number": 5,
+    "product": 16
+  }
+},
+{
+  "model": "commerce.sizeandnumber",
+  "pk": 22,
+  "fields": {
+    "size": "50",
+    "number": 4,
+    "product": 16
+  }
+},
+{
+  "model": "commerce.sizeandnumber",
+  "pk": 23,
+  "fields": {
+    "size": "48",
+    "number": 5,
+    "product": 18
+  }
+},
+{
+  "model": "commerce.sizeandnumber",
+  "pk": 24,
+  "fields": {
+    "size": "50",
+    "number": 4,
+    "product": 18
+  }
+},
+{
+  "model": "commerce.sizeandnumber",
+  "pk": 25,
+  "fields": {
+    "size": "48",
+    "number": 5,
+    "product": 19
+  }
+},
+{
+  "model": "commerce.sizeandnumber",
+  "pk": 26,
+  "fields": {
+    "size": "50",
+    "number": 4,
+    "product": 19
+  }
+},
+{
+  "model": "commerce.sizeandnumber",
+  "pk": 27,
+  "fields": {
+    "size": "48",
+    "number": 5,
+    "product": 20
+  }
+},
+{
+  "model": "commerce.sizeandnumber",
+  "pk": 28,
+  "fields": {
+    "size": "50",
+    "number": 4,
+    "product": 20
+  }
+},
+{
+  "model": "commerce.sizeandnumber",
+  "pk": 29,
+  "fields": {
+    "size": "48",
+    "number": 5,
+    "product": 21
+  }
+},
+{
+  "model": "commerce.sizeandnumber",
+  "pk": 30,
+  "fields": {
+    "size": "50",
+    "number": 4,
+    "product": 21
+  }
+},
+{
+  "model": "commerce.sizeandnumber",
+  "pk": 31,
+  "fields": {
+    "size": "48",
+    "number": 5,
+    "product": 4
+  }
+},
+{
+  "model": "commerce.sizeandnumber",
+  "pk": 32,
+  "fields": {
+    "size": "50",
+    "number": 4,
+    "product": 4
+  }
+},
+{
+  "model": "commerce.sizeandnumber",
+  "pk": 33,
+  "fields": {
+    "size": "48",
+    "number": 5,
+    "product": 17
+  }
+},
+{
+  "model": "commerce.sizeandnumber",
+  "pk": 34,
+  "fields": {
+    "size": "50",
+    "number": 4,
+    "product": 17
+  }
+},
+{
+  "model": "commerce.sizeandnumber",
+  "pk": 35,
+  "fields": {
+    "size": "48",
+    "number": 5,
+    "product": 3
+  }
+},
+{
+  "model": "commerce.sizeandnumber",
+  "pk": 36,
+  "fields": {
+    "size": "50",
+    "number": 4,
+    "product": 3
+  }
+},
+{
+  "model": "commerce.sizeandnumber",
+  "pk": 37,
+  "fields": {
+    "size": "",
+    "number": 2,
+    "product": 7
+  }
+},
+{
+  "model": "commerce.sizeandnumber",
+  "pk": 38,
+  "fields": {
+    "size": "",
+    "number": 2,
+    "product": 8
+  }
+},
+{
+  "model": "commerce.sizeandnumber",
+  "pk": 39,
+  "fields": {
+    "size": "",
+    "number": 2,
+    "product": 22
+  }
+},
+{
+  "model": "commerce.sizeandnumber",
+  "pk": 40,
+  "fields": {
+    "size": "",
+    "number": 2,
+    "product": 9
+  }
+},
+{
+  "model": "commerce.sizeandnumber",
+  "pk": 41,
+  "fields": {
+    "size": "",
+    "number": 2,
+    "product": 23
+  }
+},
+{
+  "model": "commerce.sizeandnumber",
+  "pk": 42,
+  "fields": {
+    "size": "",
+    "number": 2,
+    "product": 24
+  }
+},
+{
+  "model": "commerce.sizeandnumber",
+  "pk": 43,
+  "fields": {
+    "size": "",
+    "number": 2,
+    "product": 57
+  }
+},
+{
+  "model": "commerce.sizeandnumber",
+  "pk": 44,
+  "fields": {
+    "size": "",
+    "number": 2,
+    "product": 58
+  }
+},
+{
+  "model": "commerce.sizeandnumber",
+  "pk": 45,
+  "fields": {
+    "size": "",
+    "number": 1,
+    "product": 59
+  }
+}
+]
