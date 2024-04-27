@@ -44,6 +44,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'context_processors.category_context'
             ],
         },
     },
@@ -95,6 +96,25 @@ MEDIA_URL = '/media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
 AUTH_USER_MODEL = 'users.User'
-AUTHENTICATION_BACKENDS = ['users.backends.EmailBackend']
+
+# Сменил backend, пока не решилась проблема со спамом
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+EMAIL_HOST = "smtp.mail.ru"
+EMAIL_PORT = 2525
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = "max.b04.03@mail.ru"
+EMAIL_HOST_PASSWORD = "iirCXkYWcgb3b2M9NdkK"
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+SERVER_EMAIL = EMAIL_HOST_USER
+EMAIL_ADMIN = EMAIL_HOST_USER
+
+CASHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/"
+    }
+}
+
+USER_CONFIRMATION_KEY = "user_confirmation_{token}"
+USER_CONFIRMATION_TIMEOUT = 300

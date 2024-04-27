@@ -22,7 +22,16 @@
         <div class="col-md-3 text-right">
             <a href="{% url 'search' %}"><i class="fas fa-search"></i></a>
             <a href="#"><i class="fas fa-shopping-cart"></i></a>
-            <a href="{% url 'users:login' %}">Войти</a>
+            {% if user.is_authenticated %}
+                {{ user }}
+                <a href="#">
+                <i class="fa fa-user"></i>
+                </a>
+            {% else %}
+            <a href="{% url 'users:login' %}">
+            <i class="fa fa-sign-in"></i> Войти
+            </a>
+            {% endif %}
             <a href="#"><i class="fas fa-heart"></i></a>
         </div>
     </nav>

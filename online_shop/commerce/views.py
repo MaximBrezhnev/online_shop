@@ -2,7 +2,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, FormView
 
 from commerce.forms import SearchForm
-from commerce.models import Product, Category, Subcategory
+from commerce.models import Product, Subcategory
 
 
 class OrderedSearchMixin:
@@ -20,11 +20,6 @@ class IndexListView(ListView):
 
     def get_queryset(self):
         return Product.in_stock.all()
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["categories"] = Category.objects.all()
-        return context
 
 
 class ProductView(DetailView):
@@ -44,7 +39,6 @@ class ProductView(DetailView):
         else:
             context["is_size"] = True
 
-        context["categories"] = Category.objects.all()
         return context
 
 
@@ -58,7 +52,6 @@ class ProductsByCategoryView(OrderedSearchMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["categories"] = Category.objects.all()
         context["subcategories"] = Subcategory.objects.all()
         return context
 
@@ -77,7 +70,6 @@ class ProductsBySubcategoryView(OrderedSearchMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["cat_selected"] = self.kwargs["category_slug"]
-        context["categories"] = Category.objects.all()
         context["subcategories"] = Subcategory.objects.all()
         return context
 
@@ -89,7 +81,6 @@ class SearchView(FormView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["categories"] = Category.objects.all()
         previous_page = self.request.META.get("HTTP_REFERER")
         context["previous_page"] = previous_page
         return context
@@ -107,7 +98,6 @@ class ProductsBySearchView(OrderedSearchMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["current_query"] = self.request.GET.get("query")
-        context["categories"] = Category.objects.all()
         return context
 
 
