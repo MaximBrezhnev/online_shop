@@ -23,8 +23,7 @@
             <a href="{% url 'search' %}"><i class="fas fa-search"></i></a>
             <a href="#"><i class="fas fa-shopping-cart"></i></a>
             {% if user.is_authenticated %}
-                {{ user }}
-                <a href="#">
+                <a href="{{ user.get_absolute_url }}">
                 <i class="fa fa-user"></i>
                 </a>
             {% else %}

@@ -18,6 +18,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "commerce",
     "users",
+    "transactions",
     "django_extensions",
 ]
 
@@ -58,7 +59,7 @@ DATABASES = {
         "NAME": "postgres",
         "USER": "postgres",
         "PASSWORD": "postgres",
-        "HOST": "127.0.0.1",
+        "HOST": "127.0.0.1",  # local_db
         "PORT": 5432,
     }
 }
@@ -78,9 +79,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Moscow'
 
 USE_I18N = True
 
@@ -112,9 +113,12 @@ EMAIL_ADMIN = EMAIL_HOST_USER
 CASHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/"
+        "LOCATION": "redis://redis:6379"
     }
 }
 
 USER_CONFIRMATION_KEY = "user_confirmation_{token}"
 USER_CONFIRMATION_TIMEOUT = 300
+
+# CELERY_BROKER_URL = "redis://redis:6379"
+CELERY_TASK_ALWAYS_EAGER = True

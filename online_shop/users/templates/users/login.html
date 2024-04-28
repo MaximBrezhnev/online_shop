@@ -13,5 +13,6 @@
     {% endfor %}
     <p><button type="submit">Войти</button></p>
     <p>Впервые здесь? <a href="{% url 'users:registration' %}">Зарегистрироваться</a></p>
+    <p>Забыли пароль? <a href="{% url 'users:password_reset' %}">Восстановить</a></p>
 </form>
 {% endblock %}

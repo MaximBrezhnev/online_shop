@@ -1,15 +1,16 @@
-import uuid
-
 from django.contrib.auth import logout, authenticate, get_user_model, login
+from django.contrib.auth.views import PasswordChangeView, PasswordChangeDoneView
 from django.core.cache import cache
-from django.core.mail import send_mail
 from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import FormView
+from django.views.generic import FormView, UpdateView
 
-from online_shop.settings import DEFAULT_FROM_EMAIL, USER_CONFIRMATION_KEY, USER_CONFIRMATION_TIMEOUT
-from users.forms import LoginForm, RegisterForm
+from online_shop.settings import USER_CONFIRMATION_KEY
+from users import tasks
+from users.forms import LoginForm, RegisterForm, ProfileForm, UserPasswordChangeForm
+from users.tasks import send_email_with_link
+from users.utils import create_link
 
 
 def logout_view(request):
@@ -53,35 +54,17 @@ class RegisterView(FormView):
     success_url = reverse_lazy("users:email_was_sent")
     
     def form_valid(self, form):
-        user, created = get_user_model().objects.get_or_create(
+        user = get_user_model().objects.create(
             email=form.cleaned_data["email"],
             is_active=False
         )
         user.set_password(form.cleaned_data["password1"])
         user.save()
 
-        if created:
-            token = uuid.uuid4().hex
-            redis_key = USER_CONFIRMATION_KEY.format(token=token)
-            cache.set(
-                redis_key,
-                {"user_id": user.id},
-                timeout=USER_CONFIRMATION_TIMEOUT,
-            )
-
-            confirm_link = self.request.build_absolute_uri(
-                reverse_lazy(
-                    "users:register_confirm", kwargs={"token": token},
-                )
-            )
-
-            send_mail(
-                subject="Пожалуйста, подтвердите регистрацию",
-                message=f"Перейдите, пожалуйста, по ссылке: "
-                        f"{confirm_link}",
-                from_email=DEFAULT_FROM_EMAIL,
-                recipient_list=[user.email, ]
-            )
+        confirm_link = create_link(self.request, user)
+        # Синхронное тестирование
+        send_email_with_link(confirm_link, user.email)
+        # tasks.send_email_with_link.delay(confirm_link, user.email)
 
         return super().form_valid(form)
 
@@ -106,6 +89,24 @@ def email_was_sent_view(request):
         request,
         "users/email_was_sent.html"
     )
+
+
+class ProfileView(UpdateView):
+    pk_url_kwarg = "user_id"
+    model = get_user_model()
+    form_class = ProfileForm
+    template_name = "users/profile.html"
+    success_url = reverse_lazy("users:profile")
+
+
+class UserPasswordChangeView(PasswordChangeView):
+    form_class = UserPasswordChangeForm
+    template_name = 'users/password_change.html'
+    success_url = reverse_lazy('users:password_change_done')
+
+
+class UserPasswordChangeDoneView(PasswordChangeDoneView):
+    template_name = "users/password_change_done.html"
 
 
 
