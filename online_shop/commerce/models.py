@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.urls import reverse
@@ -77,6 +78,30 @@ class SizeAndNumber(models.Model):
 
     def __str__(self):
         return self.__getattribute__("value")
+
+
+class FavoriteProduct(models.Model):
+    product = models.ForeignKey(to="Product", on_delete=models.CASCADE)
+    user = models.ForeignKey(to=get_user_model(), on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.product.name
+
+    class Meta:
+        unique_together = ("user", "product", )
+
+
+class ProductInCart(models.Model):
+    product = models.ForeignKey(to="Product", on_delete=models.CASCADE)
+    user = models.ForeignKey(to=get_user_model(), on_delete=models.CASCADE)
+    size = models.CharField(max_length=50, blank=True, null=True)
+    number = models.PositiveIntegerField()
+
+    def __str__(self):
+        return self.product.name
+
+    class Meta:
+        unique_together = ("user", "product", "size", )
 
 
 

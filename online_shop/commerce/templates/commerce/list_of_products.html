@@ -3,7 +3,7 @@
 {% block content %}
 <div class="container mt-4">
     <div class="col-md-12 text-center">
-        <h2>Новинки</h2>
+        <h2>{{ header }}</h2>
     </div>
     <div class="row">
         {% for p in products %}
@@ -17,6 +17,7 @@
             </a>
         </div>
         {% endfor %}
+        <b>{{ message }}</b>
     </div>
 </div>
 {% endblock %}

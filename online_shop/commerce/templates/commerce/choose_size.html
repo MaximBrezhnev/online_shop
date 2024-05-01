@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Выберите размер для добавления в корзину</h2>
+{% for s in sizes %}
+    <form action="{% url 'choose_size' %}" method="get">
+        <input type="hidden" name="user_id" value="{{ user_id }}">
+        <input type="hidden" name="product_id" value="{{ product_id }}">
+        <input type="hidden" name="size" value="{{ s }}">
+        <button class="btn btn-primary">{{ s }}</button>
+    </form>
+{% endfor %}
+{% endblock %}

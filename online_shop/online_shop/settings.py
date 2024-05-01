@@ -18,7 +18,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "commerce",
     "users",
-    "transactions",
     "django_extensions",
 ]
 
