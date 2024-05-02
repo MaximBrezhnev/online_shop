@@ -79,5 +79,24 @@ urlpatterns = [
         views.message_about_cart_view,
         name="message_about_cart"
     ),
-
+    path(
+        "cart/increase/",
+        views.increase_view,
+        name="increase",
+    ),
+    path(
+        "cart/reduce/",
+        views.reduce_view,
+        name="reduce"
+    ),
+    path(
+        "cart/checkout/",
+        views.CheckoutView.as_view(),
+        name="checkout"
+    ),
+    path(
+        "cart/message-about-order/",
+        views.message_about_order_view,
+        name="message_about_order"
+    )
 ]

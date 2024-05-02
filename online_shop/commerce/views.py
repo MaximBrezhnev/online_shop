@@ -1,9 +1,10 @@
+import phonenumbers
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy, reverse
-from django.views.generic import ListView, DetailView, FormView
+from django.views.generic import ListView, DetailView, FormView, CreateView
 
-from commerce.forms import SearchForm
-from commerce.models import Product, Subcategory, FavoriteProduct, ProductInCart
+from commerce.forms import SearchForm, CheckoutForm
+from commerce.models import Product, Subcategory, FavoriteProduct, ProductInCart, OrderItem
 
 
 class OrderedSearchMixin:
@@ -63,7 +64,6 @@ class ProductView(DetailView):
                 pass
 
         else:
-            sizes = []
             context["not_all_sizes_in_cart"] = 0
             for item in self.object.size_and_number_set.all():
                 if item.number > 0:
@@ -267,14 +267,22 @@ def choose_size_view(request):
 def remove_from_cart_view(request):
     product_id = request.GET.get("product_id")
     user_id = request.GET.get("user_id")
-    size = request.GET.get("size")
+    size = request.GET.get("size", None)
 
-    removed_product = ProductInCart.objects.get(
-        product_id=product_id,
-        user_id=user_id,
-        size=size,
-    )
+    if size is None:
+        removed_product = ProductInCart.objects.get(
+            product_id=product_id,
+            user_id=user_id
+        )
+
+    else:
+        removed_product = ProductInCart.objects.get(
+            product_id=product_id,
+            user_id=user_id,
+            size=size,
+        )
     removed_product.delete()
+
     return redirect(
         to=reverse("list_of_products_in_cart")
     )
@@ -289,12 +297,6 @@ class CartView(ListView):
             user_id=self.request.user.id
         )
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["total_price"] = sum(p.product.price for p in self.object_list)
-        context["total_quantity"] = sum(p.number for p in self.object_list)
-        return context
-
 
 def message_about_cart_view(request):
     return render(
@@ -302,3 +304,111 @@ def message_about_cart_view(request):
         "commerce/message.html",
         context={"section": "корзина"}
     )
+
+
+def increase_view(request):
+    product_id = request.GET.get("product_id")
+    user_id = request.GET.get("user_id")
+    size = request.GET.get("size", None)
+
+    if size is None:
+        product_in_cart = ProductInCart.objects.get(
+            product_id=product_id,
+            user_id=user_id,
+        )
+        size_and_number = (Product.objects.get(pk=product_id).
+                           size_and_number_set.get(product_id=product_id))
+    else:
+        product_in_cart = ProductInCart.objects.get(
+            product_id=product_id,
+            user_id=user_id,
+            size=size
+        )
+        size_and_number = (
+            Product.objects.get(pk=product_id).
+            size_and_number_set.get(
+                product_id=product_id,
+                size=size
+            )
+        )
+
+    if size_and_number.number > 0:
+        size_and_number.number -= 1
+        size_and_number.save()
+        product_in_cart.number += 1
+        product_in_cart.save()
+
+    return redirect(to=reverse("list_of_products_in_cart"))
+
+
+def reduce_view(request):
+    product_id = request.GET.get("product_id")
+    user_id = request.GET.get("user_id")
+    size = request.GET.get("size", None)
+
+    if size is None:
+        product_in_cart = ProductInCart.objects.get(
+            product_id=product_id,
+            user_id=user_id,
+        )
+        size_and_number = (Product.objects.get(pk=product_id).
+                           size_and_number_set.get(product_id=product_id))
+    else:
+        product_in_cart = ProductInCart.objects.get(
+            product_id=product_id,
+            user_id=user_id,
+            size=size
+        )
+        size_and_number = (
+            Product.objects.get(pk=product_id).
+            size_and_number_set.get(
+                product_id=product_id,
+                size=size
+            )
+        )
+
+    if product_in_cart.number > 1:
+        size_and_number.number += 1
+        size_and_number.save()
+        product_in_cart.number -= 1
+        product_in_cart.save()
+
+    return redirect(to=reverse("list_of_products_in_cart"))
+
+
+class CheckoutView(CreateView):
+    form_class = CheckoutForm
+    template_name = "commerce/checkout.html"
+    success_url = reverse_lazy("message_about_order")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        object_list = ProductInCart.objects.filter(user_id=self.request.user.id)
+        context["total_price"] = sum(p.product.price * p.number for p in object_list)
+        context["total_quantity"] = sum(p.number for p in object_list)
+        return context
+
+    def form_valid(self, form):
+        order = form.save()
+        products_in_cart = ProductInCart.objects.filter(user=self.request.user)
+
+        for p in products_in_cart:
+            order_item = OrderItem.objects.create(
+                product=p.product,
+                number=p.number,
+                order=order
+            )
+            if p.size:
+                order_item.size = p.size
+                order_item.save()
+            p.delete()
+
+        return super().form_valid(form)
+
+
+def message_about_order_view(request):
+    return render(
+        request,
+        "commerce/message_about_order.html"
+    )
+

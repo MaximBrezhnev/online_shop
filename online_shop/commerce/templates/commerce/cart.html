@@ -1,38 +1,65 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% if products_in_cart %}
 <h2>Корзина</h2>
 <div class="row">
     <div class="col-md-8">
         {% for p in products_in_cart %}
+        <a href="{{ p.product.get_absolute_url }}">
         <div class="product-card p-3">
+
             <img src="{{ p.product.photo.url }}" alt="{{ p.product }}">
             <p class="font-weight-bold">{{ p.product }}</p>
             <p>Цена: {{ p.product.price }}</p>
             {% if p.size %}
-            <p>Размер: {{ p.size }}</p>
+            <p>Размер: {{p.size}}</p>
             {% endif %}
 
-            <a href="{{ p.increment_url }}"><button class="btn btn-sm btn-primary">+</button></a>
+            <form action="{% url 'increase' %}" method="GET">
+                <input type="hidden" name="product_id" value="{{ p.product_id }}">
+                <input type="hidden" name="user_id" value="{{ p.user_id }}">
+                {% if p.size %}
+                <input type="hidden" name="size" value="{{ p.size }}">
+                {% endif %}
+                <button type="submit" class="btn btn-sm btn-primary">+</button>
+            </form>
+
             <span>{{ p.number }}</span>
-            <a href="{{ p.decrement_url }}"><button class="btn btn-sm btn-primary">-</button></a>
+
+            <form action="{% url 'reduce' %}" method="GET">
+                <input type="hidden" name="product_id" value="{{ p.product_id }}">
+                <input type="hidden" name="user_id" value="{{ p.user_id }}">
+                {% if p.size %}
+                <input type="hidden" name="size" value="{{ p.size }}">
+                {% endif %}
+                <button type="submit" class="btn btn-sm btn-primary">-</button>
+            </form>
 
             <form action="{% url 'remove_from_cart' %}" method="GET">
                 <input type="hidden" name="product_id" value="{{ p.product_id }}">
                 <input type="hidden" name="user_id" value="{{ p.user_id }}">
+                {% if p.size %}
                 <input type="hidden" name="size" value="{{ p.size }}">
+                {% endif %}
                 <button type="submit" class="btn btn-sm btn-danger">Удалить</button>
             </form>
+
         </div>
+        </a>
         {% endfor %}
     </div>
         <div class="col-md-4">
         <div class="text-left">
-            <p>Количество товаров в заказе: {{ total_quantity }}</p>
-            <p>Итого: {{ total_price }}</p>
-            <button class="btn btn-primary">Оплатить</button>
+            <a href="{% url 'checkout' %}">
+            <button class="btn btn-primary">Перейти к оформлению</button>
+            </a>
         </div>
     </div>
 
 </div>
+{% else %}
+<h3>Корзина пуста</h3>
+<a href="{% url 'home' %}"><p>На главную</p></a>
+{% endif %}
 {% endblock %}
