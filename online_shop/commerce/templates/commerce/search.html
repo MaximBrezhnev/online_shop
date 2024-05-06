@@ -2,11 +2,16 @@
 
 {% block content %}
 <body>
+    <div class="container search">
     <h2>Поиск товара</h2>
     <form method="get" action="{% url 'products_by_search' %}" class="search-form">
         <a href="{{ previous_page }}" class="back-button">&#8592;</a>
-        <input type="text" name="query" placeholder="Введите запрос" class="search-input">
-        <button type="submit" class="search-button"><i class="fas fa-search"></i> Найти</button>
+        {% for f in form %}
+        <p>{{ f }}</p>
+        <div class="form-error">{{ f.errors }}</div>
+        {% endfor %}
+        <button type="submit" class="search-button"><i class="fas fa-search"></i></button>
     </form>
+    </div>
 </body>
 {% endblock %}

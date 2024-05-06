@@ -4,29 +4,38 @@
 <div class="container mt-4">
     <div class="row">
         {% if products %}
-        <div class="col-md-12 text-center">
-            <h2>Результаты поиска</h2>
-            <p>Упорядочить по:</p>
-            <div class="btn-group">
-                <a href="?query={{current_query}}&sort=price_asc" class="btn btn-primary">Возрастанию цены</a>
-                <a href="?query={{current_query}}&sort=price_desc" class="btn btn-primary">Убыванию цены</a>
-                <a href="?query={{current_query}}&sort=date" class="btn btn-primary">Новизне</a>
+            <div class="col-md-3" id="sidebar">
+            <div class="sidebar">
+                <p class="ordering font-weight-bold">Упорядочить по:</p>
+                <div class="buttons">
+                    <a href="?query={{current_query}}&sort=price_asc"><button>Возрастанию цены</button></a>
+                    <a href="?query={{current_query}}&sort=price_desc"><button>Убыванию цены</button></a>
+                    <a href="?query={{current_query}}&sort=date"><button>Новизне</button></a>
+                </div>
             </div>
-        </div>
-        {% for p in products %}
-            <div class="col-md-4">
-                <a href="{{ p.get_absolute_url }}">
-                    <div class="product-card p-3">
-                        <img src="{{ p.photo.url }}" alt="{{ p.name }}">
-                        <p class="font-weight-bold ">{{ p.name }}</p>
-                        <p>{{ p.price }}</p>
+            </div>
+            <div class="col-md-9 products-by-category">
+                <div class="row">
+                    <h2>Результаты поиска</h2>
+                </div>
+                <div class="row">
+                    {% for p in products %}
+                    <div class="col-md-4">
+                    <a href="{{ p.get_absolute_url }}" style="text-decoration: none; font-weight: normal;" onmouseout="this.style.fontWeight='normal'">
+                    <div class="product-card">
+                    <img src="{{ p.photo.url }}" alt="{{ p.name }}">
+                    <p class="font-weight-bold">{{ p.name }}</p>
+                    <p>{{ p.price }}</p>
                     </div>
-                </a>
-            </div>
-        {% endfor %}
+                    </a>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% include 'commerce/pagination.html' %}
+                </div>
         {% else %}
-        <div class="col-md-12 text-center">
-            <h2>По вашему запросу ничего не найдено</h2>
+        <div class="col-md-12 message">
+            <h3>По вашему запросу ничего не найдено</h3>
         </div>
         {% endif %}
     </div>

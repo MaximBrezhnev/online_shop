@@ -2,13 +2,14 @@
 
 {% block content %}
 <div class="container mt-4">
-    <div class="col-md-12 text-center">
+    <div class="col-md-12 text-center mb-3">
         <h2>{{ header }}</h2>
     </div>
+    {% if products %}
     <div class="row">
         {% for p in products %}
         <div class="col-md-4">
-            <a href="{{ p.get_absolute_url }}">
+            <a href="{{ p.get_absolute_url }}" style="text-decoration: none; font-weight: normal;" onmouseout="this.style.fontWeight='normal'">
                 <div class="product-card p-3">
                     <img src="{{ p.photo.url }}" alt="{{ p.name }}">
                     <p class="font-weight-bold ">{{ p.name }}</p>
@@ -17,7 +18,19 @@
             </a>
         </div>
         {% endfor %}
+    </div>
+    {% include 'commerce/pagination.html' %}
+    {% else %}
+        <div class="row justify-content-center">
+        <div class="col-md-12 text-center no-products-in-wishlist">
+            <p>В избранном нет товаров</p>
+        </div>
+    </div>
+    {% endif %}
+    <div class="row justify-content-center">
+    <div class="col-md-12 text-center mt-5">
         <b>{{ message }}</b>
+    </div>
     </div>
 </div>
 {% endblock %}

@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Авторизация</h1>
+<div class="container standard-form">
+<h2>Авторизация</h2>
 
 <form method="POST">
     {% csrf_token %}
@@ -9,10 +10,13 @@
     <div class="form-error">{{ form.non_field_errors }}</div>
     {% for f in form %}
     <p><label class="form-label" for="{{ f.id_for_label }}">{{ f.label }}</label>{{ f }}</p>
+
     <div class="form-error">{{ f.errors }}</div>
     {% endfor %}
     <p><button type="submit">Войти</button></p>
+    <hr>
     <p>Впервые здесь? <a href="{% url 'users:registration' %}">Зарегистрироваться</a></p>
     <p>Забыли пароль? <a href="{% url 'users:password_reset' %}">Восстановить</a></p>
 </form>
+</div>
 {% endblock %}

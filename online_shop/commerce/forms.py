@@ -5,7 +5,15 @@ from commerce.models import Order
 
 
 class SearchForm(forms.Form):
-    name = forms.CharField(max_length=50)
+    query = forms.CharField(
+        max_length=50,
+        widget=forms.TextInput(
+            attrs={
+                "class": "search-input",
+                "placeholder": "Введите запрос",
+            }
+        )
+    )
 
 
 class CheckoutForm(forms.ModelForm):

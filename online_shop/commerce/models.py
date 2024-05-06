@@ -12,12 +12,13 @@ class DisplayMixin:
 class ProductsInStockManager(models.Manager):
     def get_queryset(self):
         products = list(Product.objects.all())
+        products_in_stock = []
         for product in products:
             total = sum(item.number for item in product.size_and_number_set.all())
-            if total <= 0:
-                products.remove(product)
+            if total > 0:
+                products_in_stock.append(product)
 
-        return super().get_queryset().filter(pk__in=[p.pk for p in products])
+        return super().get_queryset().filter(pk__in=[p.pk for p in products_in_stock])
 
 
 class Product(DisplayMixin, models.Model):

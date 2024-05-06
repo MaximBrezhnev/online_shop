@@ -5,69 +5,71 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>OnlineShop</title>
+    <title>{{ title }}</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="{% static 'commerce/css/styles.css' %}" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'commerce/images/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'commerce/images/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'commerce/images/site.webmanifest' %}">
 </head>
 <body>
-    <nav class="navbar navbar-dark bg-dark">
-        <a class="navbar-brand" href="/commerce">OnlineShop</a>
-        <div>
-            {% for c in categories %}
-                <a href="{{ c.get_absolute_url }}"><span class="category">{{ c }}</span></a>
-            {% endfor %}
-        </div>
-        <div class="col-md-3 text-right">
-            <a href="{% url 'search' %}"><i class="fas fa-search"></i></a>
-
-            {% if user.is_authenticated %}
-            <a href="{% url 'list_of_products_in_cart' %}"><i class="fas fa-shopping-cart"></i></a>
-            {% else %}
-            <a href="{% url 'message_about_cart' %}" class="fas fa-heart"></a>
-            {% endif %}
-
-            {% if user.is_authenticated %}
-            <a href="{{ user.get_absolute_url }}">
-            <i class="fa fa-user"></i>
-            </a>
-            {% else %}
-            <a href="{% url 'users:login' %}">
-            <i class="fa fa-sign-in"></i> Войти
-            </a>
-            {% endif %}
-
-            {% if user.is_authenticated %}
-            <a href="{% url 'list_of_favorite' %}"><i class="fas fa-heart"></i></a>
-            {% else %}
-            <a href="{% url 'message_about_wishlist' %}" class="fas fa-heart"></a>
-            {% endif %}
-        </div>
-    </nav>
-
-    {% block content %}
-    {% endblock %}
-
-    <footer class="mt-4 bg-dark text-white pt-4">
-        <div class="container">
-            <div class="row">
-                <div class="col">
-                    <p><b>Контактная информация</b></p>
-                    <p>Телефон: +89207872383</p>
-                    <p>Email: online_shop@gmail.com</p>
-                </div>
-                <div class="col">
-                    <p><b>Адрес</b></p>
-                    <p>Санкт-Петербург, Улица Иванова, 5</p>
-                </div>
-                <div class="col">
-                    <p><b>График работы</b></p>
-                    <p>Понедельник - Пятница: 9:00 - 18:00</p>
-                    <p>Суббота - Воскресенье: Выходной</p>
-                </div>
+    <div class="wrapper">
+        <nav class="navbar navbar-dark bg-dark">
+            <a class="navbar-brand" href="/commerce">OnlineShop</a>
+            <div class="align-items-center">
+                {% for c in categories %}
+                    <a href="{{ c.get_absolute_url }}" style="text-decoration: none; font-weight: normal;" onmouseover="this.style.fontWeight='bold'" onmouseout="this.style.fontWeight='normal'">
+                        {% if c.slug == cat_selected %}
+                        <span style="color: white;" class="font-weight-bold">{{ c }}</span>
+                        {% else %}
+                        <span class="category">{{ c }}</span>
+                        {% endif %}
+                    </a>
+                {% endfor %}
             </div>
+            <div class="col-md-3 text-right">
+                <a href="{% url 'search' %}" class="mr-3"><i class="fas fa-search text-white"></i></a>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'list_of_products_in_cart' %}" class="mr-3"><i class="fas fa-shopping-cart text-white"></i></a>
+                    <a href="{{ user.get_absolute_url }}" class="mr-3"><i class="fa fa-user text-white"></i></a>
+                    <a href="{% url 'list_of_favorite' %}" class="mr-3"><i class="fas fa-heart text-white"></i></a>
+                {% else %}
+                    <a href="{% url 'message_about_cart' %}" class="mr-3"><i class="fas fa-shopping-cart text-white"></i></a>
+                    <a href="{% url 'users:login' %}" class="mr-3" style="text-decoration: none; font-weight: normal; color:white;" onmouseout="this.style.fontWeight='normal"><i class="fa fa-sign-in text-white"></i> Войти</a>
+                    <a href="{% url 'message_about_wishlist' %}" class="mr-3"><i class="fas fa-heart text-white"></i></a>
+                {% endif %}
+            </div>
+        </nav>
+
+        <div class="content">
+            {% block content %}
+            {% endblock %}
         </div>
-    </footer>
+
+        <div class="footer">
+            <footer class="mt-4 bg-dark text-white pt-4">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <p><b>Контактная информация</b></p>
+                            <p>Телефон: +89207872383</p>
+                            <p>Email: online_shop@gmail.com</p>
+                        </div>
+                        <div class="col">
+                            <p><b>Адрес</b></p>
+                            <p>Санкт-Петербург, Улица Иванова, 5</p>
+                        </div>
+                        <div class="col">
+                            <p><b>График работы</b></p>
+                            <p>Понедельник - Пятница: 9:00 - 18:00</p>
+                            <p>Суббота - Воскресенье: Выходной</p>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
 </body>
 </html>

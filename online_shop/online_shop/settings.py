@@ -29,6 +29,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "online_shop.middleware.NoCacheMiddleware"
 ]
 
 ROOT_URLCONF = 'online_shop.urls'
@@ -44,7 +45,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'context_processors.category_context'
+                'online_shop.context_processors.category_context'
             ],
         },
     },
@@ -121,3 +122,4 @@ USER_CONFIRMATION_TIMEOUT = 300
 
 # CELERY_BROKER_URL = "redis://redis:6379"
 CELERY_TASK_ALWAYS_EAGER = True
+

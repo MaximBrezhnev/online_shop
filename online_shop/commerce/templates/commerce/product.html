@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container mt-4 main-content">
+<div class="container mt-4 main-content product">
     <div class="row">
         <div class="col-md-4 offset-md-2">
             <img src="{{ product.photo.url }}" alt="{{ product.name }}" class="img-fluid">
@@ -20,7 +20,7 @@
                          {% endfor %}
                     {% endif %}
                 </p>
-
+                <hr>
 <!--                Блок реализации корзины-->
                 {% if user.is_anonymous %}
                     <a href="{% url 'message_about_cart' %}">
@@ -36,7 +36,7 @@
                         <input type="hidden" name="user_id" value="{{ user.id }}">
                         <input type="hidden" name="product_id" value="{{ product.id }}">
                         <input type="hidden" name="is_size" value="{{ is_size }}">
-                        <button class="btn btn-primary">Добавить в корзину</button>
+                        <button type="submit">Добавить в корзину</button>
                     </form>
                     {% endif %}
                 {% endif %}

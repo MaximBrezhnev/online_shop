@@ -1,4 +1,5 @@
 from django.contrib.auth import logout, authenticate, get_user_model, login
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import PasswordChangeView, PasswordChangeDoneView
 from django.core.cache import cache
 from django.shortcuts import redirect, render, get_object_or_404
@@ -13,6 +14,10 @@ from users.tasks import send_email_with_link
 from users.utils import create_link
 
 
+class CustomLoginRequiredMixin(LoginRequiredMixin):
+    login_url = reverse_lazy("users:login")
+
+
 def logout_view(request):
     logout(request)
     return redirect(to=reverse_lazy("users:login"))
@@ -23,7 +28,10 @@ class LoginView(View):
         return render(
             request,
             "users/login.html",
-            context={"form": LoginForm()}
+            context={
+                "title": "Вход",
+                "form": LoginForm()
+            }
         )
 
     def post(self, request):
@@ -40,11 +48,14 @@ class LoginView(View):
                     to=reverse_lazy("home")
                 )
 
-            form.add_error(None, "Invalid email or password")
+            form.add_error(None, "Неверный адрес электронной почты или пароль")
             return render(
                 request,
                 "users/login.html",
-                {"form": form},
+                context={
+                    "title": "Вход",
+                    "form": form
+                },
             )
 
 
@@ -52,6 +63,9 @@ class RegisterView(FormView):
     form_class = RegisterForm
     template_name = "users/registration.html"
     success_url = reverse_lazy("users:email_was_sent")
+    extra_context = {
+        "title": "Регистрация"
+    }
     
     def form_valid(self, form):
         user = get_user_model().objects.create(
@@ -87,26 +101,38 @@ def register_confirm_view(request, token):
 def email_was_sent_view(request):
     return render(
         request,
-        "users/email_was_sent.html"
+        "users/email_was_sent.html",
+        context={
+            "title": "Письмо отправлено"
+        }
     )
 
 
-class ProfileView(UpdateView):
+class ProfileView(CustomLoginRequiredMixin, UpdateView):
     pk_url_kwarg = "user_id"
     model = get_user_model()
     form_class = ProfileForm
     template_name = "users/profile.html"
     success_url = reverse_lazy("users:profile")
+    extra_context = {
+        "title": "Профиль"
+    }
 
 
 class UserPasswordChangeView(PasswordChangeView):
     form_class = UserPasswordChangeForm
     template_name = 'users/password_change.html'
     success_url = reverse_lazy('users:password_change_done')
+    extra_context = {
+        "title": "Смена пароля"
+    }
 
 
 class UserPasswordChangeDoneView(PasswordChangeDoneView):
     template_name = "users/password_change_done.html"
+    extra_context = {
+        "title": "Пароль изменен"
+    }
 
 
 

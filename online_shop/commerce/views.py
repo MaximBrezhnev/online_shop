@@ -4,7 +4,7 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, FormView, CreateView
 
 from commerce.forms import SearchForm, CheckoutForm
-from commerce.models import Product, Subcategory, FavoriteProduct, ProductInCart, OrderItem
+from commerce.models import Product, Subcategory, FavoriteProduct, ProductInCart, OrderItem, Category
 
 
 class OrderedSearchMixin:
@@ -19,13 +19,15 @@ class OrderedSearchMixin:
 class IndexListView(ListView):
     template_name = "commerce/list_of_products.html"
     context_object_name = "products"
+    paginate_by = 6
 
     def get_queryset(self):
-        return Product.in_stock.all()
+        return Product.in_stock.all()[:21]
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["header"] = "Новинки"
+        context["title"] = "Главная"
         return context
 
 
@@ -37,6 +39,7 @@ class ProductView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context["title"] = self.object
 
         if all(
                 item.size == "" for item in
@@ -76,12 +79,14 @@ class ProductView(DetailView):
                     except:
                         context["not_all_sizes_in_cart"] = 1
                         break
+
         return context
 
 
 class ProductsByCategoryView(OrderedSearchMixin, ListView):
     template_name = "commerce/categories.html"
     context_object_name = "products"
+    paginate_by = 6
 
     def get_queryset(self):
         products = Product.in_stock.filter(category__slug=self.kwargs["category_slug"])
@@ -89,6 +94,8 @@ class ProductsByCategoryView(OrderedSearchMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context["title"] = Category.objects.get(slug=self.kwargs["category_slug"])
+        context["cat_selected"] = self.kwargs["category_slug"]
         context["subcategories"] = Subcategory.objects.all()
         return context
 
@@ -96,6 +103,7 @@ class ProductsByCategoryView(OrderedSearchMixin, ListView):
 class ProductsBySubcategoryView(OrderedSearchMixin, ListView):
     template_name = "commerce/subcategories.html"
     context_object_name = "products"
+    paginate_by = 6
 
     def get_queryset(self):
         products = Product.in_stock.filter(
@@ -106,7 +114,10 @@ class ProductsBySubcategoryView(OrderedSearchMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context["title"] = (f'{Category.objects.get(slug=self.kwargs["category_slug"])}: '
+                            f'{str(Subcategory.objects.get(slug=self.kwargs["subcategory_slug"])).lower()}')
         context["cat_selected"] = self.kwargs["category_slug"]
+        context["subcategory_selected"] = self.kwargs["subcategory_slug"]
         context["subcategories"] = Subcategory.objects.all()
         return context
 
@@ -118,6 +129,7 @@ class SearchView(FormView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context["title"] = "Поиск"
         previous_page = self.request.META.get("HTTP_REFERER")
         context["previous_page"] = previous_page
         return context
@@ -126,6 +138,7 @@ class SearchView(FormView):
 class ProductsBySearchView(OrderedSearchMixin, ListView):
     template_name = "commerce/products_by_search.html"
     context_object_name = "products"
+    paginate_by = 6
 
     def get_queryset(self):
         query = self.request.GET.get("query")
@@ -134,6 +147,7 @@ class ProductsBySearchView(OrderedSearchMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context["title"] = "Товары по запросу"
         context["current_query"] = self.request.GET.get("query")
         return context
 
@@ -169,14 +183,18 @@ def remove_from_wishlist_view(request, product_id, user_id):
 def message_about_wishlist_view(request):
     return render(
         request,
-        "commerce/message.html",
-        context={"section": "избранное"}
+        "commerce/message_about_permission.html",
+        context={
+            "title": "Избранное недоступно",
+            "section": "избранное"
+        }
     )
 
 
 class FavoriteProductsView(ListView):
     template_name = "commerce/list_of_products.html"
     context_object_name = "products"
+    paginate_by = 6
 
     def get_queryset(self):
         favorite_products_ids = [p.product_id for p in self.request.user.favoriteproduct_set.all()]
@@ -184,14 +202,13 @@ class FavoriteProductsView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context["title"] = "Избранное"
         context["header"] = "Избранное"
         context["message"] = ("Учтите, что "
                               "товары, которых в данный момент нет в наличии, "
                               "не отображаются в избранном")
         return context
 
-
-# Отсюда начинается блок реализации функционала корзины
 
 def add_to_cart_view(request):
     user_id = request.GET.get("user_id")
@@ -274,6 +291,7 @@ def remove_from_cart_view(request):
             product_id=product_id,
             user_id=user_id
         )
+        size_and_number = removed_product.product.size_and_number_set.all()[0]
 
     else:
         removed_product = ProductInCart.objects.get(
@@ -281,6 +299,12 @@ def remove_from_cart_view(request):
             user_id=user_id,
             size=size,
         )
+        size_and_number = removed_product.product.size_and_number_set.get(
+            size=size
+        )
+
+    size_and_number.number += removed_product.number
+    size_and_number.save()
     removed_product.delete()
 
     return redirect(
@@ -291,18 +315,27 @@ def remove_from_cart_view(request):
 class CartView(ListView):
     template_name = "commerce/cart.html"
     context_object_name = "products_in_cart"
+    paginate_by = 3
 
     def get_queryset(self):
         return ProductInCart.objects.filter(
             user_id=self.request.user.id
         )
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "Корзина"
+        return context
+
 
 def message_about_cart_view(request):
     return render(
         request,
-        "commerce/message.html",
-        context={"section": "корзина"}
+        "commerce/message_about_permission.html",
+        context={
+            "title": "Корзина недоступна",
+            "section": "корзина"
+        }
     )
 
 
@@ -383,6 +416,7 @@ class CheckoutView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context["title"] = "Оформление заказа"
         object_list = ProductInCart.objects.filter(user_id=self.request.user.id)
         context["total_price"] = sum(p.product.price * p.number for p in object_list)
         context["total_quantity"] = sum(p.number for p in object_list)
@@ -409,6 +443,8 @@ class CheckoutView(CreateView):
 def message_about_order_view(request):
     return render(
         request,
-        "commerce/message_about_order.html"
+        "commerce/message_about_order.html",
+        context={
+            "title": "Заказ оформлен"
+        }
     )
-

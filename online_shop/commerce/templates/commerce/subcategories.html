@@ -2,28 +2,46 @@
 
 {% block content %}
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-md-3" id="sidebar">
+        <div class="row">
+            <div class="col-md-3" id="sidebar">
             <div class="sidebar">
-                <p><b>Упорядочить по:</b></p>
-                <div class="btn-group">
-                    <a href="?sort=price_asc" class="btn btn-primary">Возрастанию цены</a>
-                    <a href="?sort=price_desc" class="btn btn-primary">Убыванию цены</a>
-                    <a href="?sort=date" class="btn btn-primary">Новизне</a>
+                <p class="ordering font-weight-bold">Упорядочить по:</p>
+                <div class="buttons">
+                    <a href="?sort=price_asc">
+                        <button>Возрастанию цены</button>
+                    </a>
+                    <a href="?sort=price_desc">
+                        <button>Убыванию цены</button>
+                    </a>
+
+                    <a href="?sort=date">
+                        <button>Новизне</button>
+                    </a>
                 </div>
+
+                <hr>
+
                 <ul class="list-unstyled">
                     {% for s in subcategories %}
                     <li>
                         <a href="/commerce/categories/{{cat_selected}}/{{s.slug}}/"
-                           class="subcategory text-decoration-none">
+                           class="subcategory"
+                           style="text-decoration: none; font-weight: normal; color:black;"
+                           onmouseover="this.style.fontWeight='bold'"
+                           onmouseout="this.style.fontWeight='normal'">
+                            {% if s.slug == subcategory_selected %}
+                            <span class="font-weight-bold">{{ s }}</span>
+                            {% else %}
                             {{ s }}
+                            {% endif %}
                         </a>
                     </li>
                     {% endfor %}
                 </ul>
             </div>
         </div>
-        <div class="col-md-9">
+
+        <div class="col-md-9 products-by-category">
             <div class="row">
                 {% for p in products %}
                     <div class="col-md-4">
@@ -39,5 +57,6 @@
             </div>
         </div>
     </div>
+    {% include 'commerce/pagination.html' %}
 </div>
 {% endblock %}

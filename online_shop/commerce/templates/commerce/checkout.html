@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<p>Количество товаров в заказе: {{ total_quantity }}</p>
-<p>Итого: {{ total_price }}</p>
+
+<div class="container standard-form">
 <h2>Заполните контактные данные</h2>
 <form method="POST">
     {% csrf_token %}
@@ -11,7 +11,11 @@
     <p><label class="form-label" for="{{ f.id_for_label }}">{{ f.label }}</label>{{ f }}</p>
     <div class="form-error">{{ f.errors }}</div>
     {% endfor %}
+    <hr>
+    <p><span class="font-weight-bold">Количество товаров в заказе:</span> {{ total_quantity }}</p>
+    <p><span class="font-weight-bold">Итого:</span> {{ total_price }}</p>
     <p><button type="submit">Заказать</button></p>
 </form>
+</div>
 
 {% endblock %}
