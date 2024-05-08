@@ -24,12 +24,12 @@
                 <ul class="list-unstyled">
                     {% for s in subcategories %}
                     <li>
-                        <a href="/commerce/categories/{{cat_selected}}/{{s.slug}}/"
+                        <a href="/commerce/categories/{{cat_selected.slug}}/{{s.slug}}/"
                            class="subcategory"
                            style="text-decoration: none; font-weight: normal; color:black;"
                            onmouseover="this.style.fontWeight='bold'"
                            onmouseout="this.style.fontWeight='normal'">
-                            {% if s.slug == subcategory_selected %}
+                            {% if s == subcategory_selected %}
                             <span class="font-weight-bold">{{ s }}</span>
                             {% else %}
                             {{ s }}
@@ -57,6 +57,6 @@
             </div>
         </div>
     </div>
-    {% include 'commerce/pagination.html' %}
+    {% include 'pagination.html' %}
 </div>
 {% endblock %}

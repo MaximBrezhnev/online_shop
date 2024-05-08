@@ -1,5 +1,5 @@
-import time
-from datetime import datetime, timedelta
+from smtplib import SMTPRecipientsRefused
+from typing import Optional
 
 from celery import shared_task
 from django.contrib.auth import get_user_model
@@ -9,31 +9,34 @@ from online_shop.settings import DEFAULT_FROM_EMAIL, USER_CONFIRMATION_TIMEOUT
 
 
 @shared_task
-def send_email_with_link(confirm_link, email):
-    send_mail(
-        subject="Пожалуйста, подтвердите регистрацию",
-        message=f"Перейдите, пожалуйста, по ссылке: "
-                f"{confirm_link}",
-        from_email=DEFAULT_FROM_EMAIL,
-        recipient_list=[email, ]
-    )
-
-    # Синхронное тестирование
-    # time.sleep(10)
-    # delete_inactive_user(email)
-
-    # delete_inactive_user.subtask(
-    #     args=(email, ),
-    #     eta=datetime.now() + timedelta(seconds=USER_CONFIRMATION_TIMEOUT+10)
-    # )
+def send_email_with_link(confirm_link: str, email: str) -> Optional[bool]:
+    try:
+        send_mail(
+            subject="Пожалуйста, подтвердите регистрацию",
+            message=f"Перейдите, пожалуйста, по ссылке: "
+                    f"{confirm_link}",
+            from_email=DEFAULT_FROM_EMAIL,
+            recipient_list=[email, ]
+        )
+        _delete_inactive_user.apply_async(
+            args=(email,),
+            countdown=USER_CONFIRMATION_TIMEOUT + 5
+        )
+    except SMTPRecipientsRefused:
+        _delete_inactive_user(
+            email=email
+        )
+        return False
 
 
 @shared_task
-def delete_inactive_user(email):
+def _delete_inactive_user(email: str) -> None:
     User = get_user_model()
     user = User.objects.get(email=email)
     if user.is_active is False:
         user.delete()
+
+
 
 
 

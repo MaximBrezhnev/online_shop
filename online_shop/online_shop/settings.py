@@ -7,7 +7,7 @@ SECRET_KEY = 'django-insecure-zhv80f24r@p)ym2xmrm*4=ocy!7#9za2ti1t%@pjd8eo7$_xi7
 
 DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1", "localhost", ]
+ALLOWED_HOSTS = ["127.0.0.1", "localhost", "0.0.0.0", ]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -18,6 +18,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "commerce",
     "users",
+    "cart",
     "django_extensions",
 ]
 
@@ -59,7 +60,7 @@ DATABASES = {
         "NAME": "postgres",
         "USER": "postgres",
         "PASSWORD": "postgres",
-        "HOST": "127.0.0.1",  # local_db
+        "HOST": "local_db",  # local_db
         "PORT": 5432,
     }
 }
@@ -99,8 +100,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'users.User'
 
-# Сменил backend, пока не решилась проблема со спамом
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.mail.ru"
 EMAIL_PORT = 2525
 EMAIL_USE_TLS = True
@@ -113,13 +113,12 @@ EMAIL_ADMIN = EMAIL_HOST_USER
 CASHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://redis:6379"
+        "LOCATION": "redis://redis:6379/1"
     }
 }
 
 USER_CONFIRMATION_KEY = "user_confirmation_{token}"
-USER_CONFIRMATION_TIMEOUT = 300
+USER_CONFIRMATION_TIMEOUT = 20  # 300
 
-# CELERY_BROKER_URL = "redis://redis:6379"
-CELERY_TASK_ALWAYS_EAGER = True
+CELERY_BROKER_URL = "redis://redis:6379/0"
 

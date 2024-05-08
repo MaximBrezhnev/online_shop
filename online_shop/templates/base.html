@@ -21,7 +21,7 @@
             <div class="align-items-center">
                 {% for c in categories %}
                     <a href="{{ c.get_absolute_url }}" style="text-decoration: none; font-weight: normal;" onmouseover="this.style.fontWeight='bold'" onmouseout="this.style.fontWeight='normal'">
-                        {% if c.slug == cat_selected %}
+                        {% if c == cat_selected %}
                         <span style="color: white;" class="font-weight-bold">{{ c }}</span>
                         {% else %}
                         <span class="category">{{ c }}</span>

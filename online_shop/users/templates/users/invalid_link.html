@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container message">
+        <h2>Ссылка недействительна</h2>
+        <p>Срок действия ссылки для подтверждения регистрации истек. Пройдите <a href="{% url 'users:registration'%}">регистрацию</a>
+            повторно.
+        </p>
+    </div>
+{% endblock %}

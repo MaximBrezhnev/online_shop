@@ -21,7 +21,7 @@
                     {% endif %}
                 </p>
                 <hr>
-<!--                Блок реализации корзины-->
+
                 {% if user.is_anonymous %}
                     <a href="{% url 'message_about_cart' %}">
                         Добавить в корзину
@@ -40,7 +40,6 @@
                     </form>
                     {% endif %}
                 {% endif %}
-<!--                -->
 
                 {% if is_favorite %}
                 <form action="{% url 'remove_from_wishlist' product_id=product.id user_id=user.id %}" method="post">

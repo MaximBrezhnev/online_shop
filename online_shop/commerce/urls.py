@@ -2,6 +2,7 @@ from django.urls import path
 
 from commerce import views
 
+
 urlpatterns = [
     path(
         "",
@@ -53,50 +54,4 @@ urlpatterns = [
         views.FavoriteProductsView.as_view(),
         name="list_of_favorite",
     ),
-    # Отсюда начинается реализации функционала корзины
-    path(
-        "cart/list-of-products-in-cart/",
-        views.CartView.as_view(),
-        name="list_of_products_in_cart"
-    ),
-    path(
-        "cart/add-to-cart/",
-        views.add_to_cart_view,
-        name="add_to_cart"
-    ),
-    path(
-        "cart/choose-size/",
-        views.choose_size_view,
-        name="choose_size"
-    ),
-    path(
-        "cart/remove-from-cart/",
-        views.remove_from_cart_view,
-        name="remove_from_cart",
-    ),
-    path(
-        "cart/message-about-cart/",
-        views.message_about_cart_view,
-        name="message_about_cart"
-    ),
-    path(
-        "cart/increase/",
-        views.increase_view,
-        name="increase",
-    ),
-    path(
-        "cart/reduce/",
-        views.reduce_view,
-        name="reduce"
-    ),
-    path(
-        "cart/checkout/",
-        views.CheckoutView.as_view(),
-        name="checkout"
-    ),
-    path(
-        "cart/message-about-order/",
-        views.message_about_order_view,
-        name="message_about_order"
-    )
 ]

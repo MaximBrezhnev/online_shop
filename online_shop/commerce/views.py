@@ -1,19 +1,15 @@
-import phonenumbers
+from django.http import HttpRequest, HttpResponseRedirect, HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy, reverse
-from django.views.generic import ListView, DetailView, FormView, CreateView
+from django.views.generic import ListView, DetailView, FormView
 
-from commerce.forms import SearchForm, CheckoutForm
-from commerce.models import Product, Subcategory, FavoriteProduct, ProductInCart, OrderItem, Category
-
-
-class OrderedSearchMixin:
-    def get_ordered_queryset(self, products):
-        if self.request.GET.get("sort", None) == "price_desc":
-            return products.order_by("-price")
-        if self.request.GET.get("sort", None) == "price_asc":
-            return products.order_by("price")
-        return products
+from commerce.forms import SearchForm
+from commerce.mixins import OrderedSearchMixin
+from commerce.models import Product, FavoriteProduct
+from commerce.services import _get_newest_products, _is_size, _is_favorite, _in_cart_and_not_all_sizes_in_cart, \
+    _get_category_by_slug, _get_subcategories, _get_products_by_category, _get_products_by_category_and_subcategory, \
+    _get_title_by_category_and_subcategory, _get_subcategory_by_slug, _create_product_in_wishlist, \
+    _remove_product_from_wishlist, _get_products_in_wishlist
 
 
 class IndexListView(ListView):
@@ -22,7 +18,7 @@ class IndexListView(ListView):
     paginate_by = 6
 
     def get_queryset(self):
-        return Product.in_stock.all()[:21]
+        return _get_newest_products()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -39,46 +35,21 @@ class ProductView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = self.object
-
-        if all(
-                item.size == "" for item in
-                self.object.size_and_number_set.all()
-        ):
-            context["is_size"] = 0
-        else:
-            context["is_size"] = 1
-
+        product = self.object
         user = self.request.user
-        if not user.is_anonymous:
-            if self.object in [p.product for p in user.favoriteproduct_set.all()]:
-                context["is_favorite"] = 1
 
-        context["in_cart"] = 0
-        if not context["is_size"]:
-            context["not_all_sizes_in_cart"] = 1
-            try:
-                ProductInCart.objects.get(
-                    product_id=self.object.id,
-                    user_id=user.id
-                )
-                context["in_cart"] = 1
-            except:
-                pass
-
-        else:
-            context["not_all_sizes_in_cart"] = 0
-            for item in self.object.size_and_number_set.all():
-                if item.number > 0:
-                    try:
-                        ProductInCart.objects.get(
-                            product_id=item.product_id,
-                            user_id=user.id,
-                            size=item.size
-                        )
-                    except:
-                        context["not_all_sizes_in_cart"] = 1
-                        break
+        context["title"] = product
+        context["is_size"] = _is_size(product=product)
+        context["is_favorite"] = _is_favorite(
+            product=product,
+            user=user
+        )
+        context["in_cart"], context["not_all_sizes_in_cart"] = \
+            _in_cart_and_not_all_sizes_in_cart(
+                is_size=context["is_size"],
+                product=product,
+                user=user
+            )
 
         return context
 
@@ -89,14 +60,20 @@ class ProductsByCategoryView(OrderedSearchMixin, ListView):
     paginate_by = 6
 
     def get_queryset(self):
-        products = Product.in_stock.filter(category__slug=self.kwargs["category_slug"])
+        products = _get_products_by_category(
+            category_slug=self.kwargs["category_slug"]
+        )
         return super().get_ordered_queryset(products)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = Category.objects.get(slug=self.kwargs["category_slug"])
-        context["cat_selected"] = self.kwargs["category_slug"]
-        context["subcategories"] = Subcategory.objects.all()
+
+        category = _get_category_by_slug(
+            slug=self.kwargs["category_slug"]
+        )
+        context["title"] = category
+        context["cat_selected"] = category
+        context["subcategories"] = _get_subcategories()
         return context
 
 
@@ -106,19 +83,26 @@ class ProductsBySubcategoryView(OrderedSearchMixin, ListView):
     paginate_by = 6
 
     def get_queryset(self):
-        products = Product.in_stock.filter(
-            category__slug=self.kwargs["category_slug"],
-            subcategory__slug=self.kwargs["subcategory_slug"]
+        products = _get_products_by_category_and_subcategory(
+            category_slug=self.kwargs["category_slug"],
+            subcategory_slug=self.kwargs["subcategory_slug"]
         )
         return super().get_ordered_queryset(products)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = (f'{Category.objects.get(slug=self.kwargs["category_slug"])}: '
-                            f'{str(Subcategory.objects.get(slug=self.kwargs["subcategory_slug"])).lower()}')
-        context["cat_selected"] = self.kwargs["category_slug"]
-        context["subcategory_selected"] = self.kwargs["subcategory_slug"]
-        context["subcategories"] = Subcategory.objects.all()
+        category_slug = self.kwargs["category_slug"]
+        subcategory_slug = self.kwargs["subcategory_slug"]
+
+        context["title"] = _get_title_by_category_and_subcategory(
+            category_slug=category_slug,
+            subcategory_slug=subcategory_slug
+        )
+        context["cat_selected"] = _get_category_by_slug(slug=category_slug)
+        context["subcategory_selected"] = _get_subcategory_by_slug(
+            slug=subcategory_slug
+        )
+        context["subcategories"] = _get_subcategories()
         return context
 
 
@@ -129,8 +113,8 @@ class SearchView(FormView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = "Поиск"
         previous_page = self.request.META.get("HTTP_REFERER")
+        context["title"] = "Поиск"
         context["previous_page"] = previous_page
         return context
 
@@ -152,8 +136,12 @@ class ProductsBySearchView(OrderedSearchMixin, ListView):
         return context
 
 
-def add_to_wishlist_view(request, product_id, user_id):
-    favorite_product = FavoriteProduct.objects.create(
+def add_to_wishlist_view(
+        request: HttpRequest,
+        product_id: str,
+        user_id: str
+) -> HttpResponseRedirect:
+    favorite_product = _create_product_in_wishlist(
         product_id=product_id,
         user_id=user_id,
     )
@@ -165,12 +153,15 @@ def add_to_wishlist_view(request, product_id, user_id):
     )
 
 
-def remove_from_wishlist_view(request, product_id, user_id):
-    removed_product = FavoriteProduct.objects.get(
+def remove_from_wishlist_view(
+        request: HttpRequest,
+        product_id: str,
+        user_id: str
+) -> HttpResponseRedirect:
+    removed_product = _remove_product_from_wishlist(
         product_id=product_id,
         user_id=user_id
     )
-    removed_product.delete()
 
     return redirect(
         to=reverse(
@@ -180,7 +171,7 @@ def remove_from_wishlist_view(request, product_id, user_id):
     )
 
 
-def message_about_wishlist_view(request):
+def message_about_wishlist_view(request: HttpRequest) -> HttpResponse:
     return render(
         request,
         "commerce/message_about_permission.html",
@@ -197,8 +188,7 @@ class FavoriteProductsView(ListView):
     paginate_by = 6
 
     def get_queryset(self):
-        favorite_products_ids = [p.product_id for p in self.request.user.favoriteproduct_set.all()]
-        return Product.in_stock.filter(pk__in=favorite_products_ids)
+        return _get_products_in_wishlist(user=self.request.user)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -210,241 +200,4 @@ class FavoriteProductsView(ListView):
         return context
 
 
-def add_to_cart_view(request):
-    user_id = request.GET.get("user_id")
-    product_id = request.GET.get("product_id")
-    is_size = int(request.GET.get("is_size"))
-    product = Product.in_stock.get(pk=product_id)
 
-    if is_size:
-        sizes = []
-        for item in product.size_and_number_set.all():
-            if item.number > 0:
-                try:
-                    ProductInCart.objects.get(
-                        product_id=product_id,
-                        user_id=user_id,
-                        size=item.size,
-                    )
-                except:
-                    sizes.append(item.size)
-
-        return render(
-            request,
-            "commerce/choose_size.html",
-            context={
-                "product_id": product_id,
-                "user_id": user_id,
-                "sizes": sizes,
-            }
-        )
-
-    size_and_number = product.size_and_number_set.all()[0]
-    size_and_number.number -= 1
-    size_and_number.save()
-
-    ProductInCart.objects.create(
-        product_id=product_id,
-        user_id=user_id,
-        number=1,
-    )
-    return redirect(
-        to=reverse(
-            "product",
-            kwargs={"product_slug": product.slug}
-        )
-    )
-
-
-def choose_size_view(request):
-    user_id = request.GET.get("user_id")
-    product_id = request.GET.get("product_id")
-    size = request.GET.get("size")
-
-    ProductInCart.objects.create(
-        product_id=product_id,
-        user_id=user_id,
-        size=size,
-        number=1
-    )
-
-    product = Product.objects.get(pk=product_id)
-    size_and_number = product.size_and_number_set.get(size=size)
-    size_and_number.number -= 1
-    size_and_number.save()
-
-    return redirect(
-        to=reverse(
-            "product",
-            kwargs={"product_slug": product.slug}
-        )
-    )
-
-
-def remove_from_cart_view(request):
-    product_id = request.GET.get("product_id")
-    user_id = request.GET.get("user_id")
-    size = request.GET.get("size", None)
-
-    if size is None:
-        removed_product = ProductInCart.objects.get(
-            product_id=product_id,
-            user_id=user_id
-        )
-        size_and_number = removed_product.product.size_and_number_set.all()[0]
-
-    else:
-        removed_product = ProductInCart.objects.get(
-            product_id=product_id,
-            user_id=user_id,
-            size=size,
-        )
-        size_and_number = removed_product.product.size_and_number_set.get(
-            size=size
-        )
-
-    size_and_number.number += removed_product.number
-    size_and_number.save()
-    removed_product.delete()
-
-    return redirect(
-        to=reverse("list_of_products_in_cart")
-    )
-
-
-class CartView(ListView):
-    template_name = "commerce/cart.html"
-    context_object_name = "products_in_cart"
-    paginate_by = 3
-
-    def get_queryset(self):
-        return ProductInCart.objects.filter(
-            user_id=self.request.user.id
-        )
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["title"] = "Корзина"
-        return context
-
-
-def message_about_cart_view(request):
-    return render(
-        request,
-        "commerce/message_about_permission.html",
-        context={
-            "title": "Корзина недоступна",
-            "section": "корзина"
-        }
-    )
-
-
-def increase_view(request):
-    product_id = request.GET.get("product_id")
-    user_id = request.GET.get("user_id")
-    size = request.GET.get("size", None)
-
-    if size is None:
-        product_in_cart = ProductInCart.objects.get(
-            product_id=product_id,
-            user_id=user_id,
-        )
-        size_and_number = (Product.objects.get(pk=product_id).
-                           size_and_number_set.get(product_id=product_id))
-    else:
-        product_in_cart = ProductInCart.objects.get(
-            product_id=product_id,
-            user_id=user_id,
-            size=size
-        )
-        size_and_number = (
-            Product.objects.get(pk=product_id).
-            size_and_number_set.get(
-                product_id=product_id,
-                size=size
-            )
-        )
-
-    if size_and_number.number > 0:
-        size_and_number.number -= 1
-        size_and_number.save()
-        product_in_cart.number += 1
-        product_in_cart.save()
-
-    return redirect(to=reverse("list_of_products_in_cart"))
-
-
-def reduce_view(request):
-    product_id = request.GET.get("product_id")
-    user_id = request.GET.get("user_id")
-    size = request.GET.get("size", None)
-
-    if size is None:
-        product_in_cart = ProductInCart.objects.get(
-            product_id=product_id,
-            user_id=user_id,
-        )
-        size_and_number = (Product.objects.get(pk=product_id).
-                           size_and_number_set.get(product_id=product_id))
-    else:
-        product_in_cart = ProductInCart.objects.get(
-            product_id=product_id,
-            user_id=user_id,
-            size=size
-        )
-        size_and_number = (
-            Product.objects.get(pk=product_id).
-            size_and_number_set.get(
-                product_id=product_id,
-                size=size
-            )
-        )
-
-    if product_in_cart.number > 1:
-        size_and_number.number += 1
-        size_and_number.save()
-        product_in_cart.number -= 1
-        product_in_cart.save()
-
-    return redirect(to=reverse("list_of_products_in_cart"))
-
-
-class CheckoutView(CreateView):
-    form_class = CheckoutForm
-    template_name = "commerce/checkout.html"
-    success_url = reverse_lazy("message_about_order")
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["title"] = "Оформление заказа"
-        object_list = ProductInCart.objects.filter(user_id=self.request.user.id)
-        context["total_price"] = sum(p.product.price * p.number for p in object_list)
-        context["total_quantity"] = sum(p.number for p in object_list)
-        return context
-
-    def form_valid(self, form):
-        order = form.save()
-        products_in_cart = ProductInCart.objects.filter(user=self.request.user)
-
-        for p in products_in_cart:
-            order_item = OrderItem.objects.create(
-                product=p.product,
-                number=p.number,
-                order=order
-            )
-            if p.size:
-                order_item.size = p.size
-                order_item.save()
-            p.delete()
-
-        return super().form_valid(form)
-
-
-def message_about_order_view(request):
-    return render(
-        request,
-        "commerce/message_about_order.html",
-        context={
-            "title": "Заказ оформлен"
-        }
-    )
