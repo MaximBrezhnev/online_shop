@@ -4,12 +4,12 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, FormView
 
 from commerce.forms import SearchForm
-from commerce.mixins import OrderedSearchMixin
+from commerce.mixins import OrderedSearchMixin, WishlistLoginRequiredMixin
 from commerce.models import Product, FavoriteProduct
 from commerce.services import _get_newest_products, _is_size, _is_favorite, _in_cart_and_not_all_sizes_in_cart, \
     _get_category_by_slug, _get_subcategories, _get_products_by_category, _get_products_by_category_and_subcategory, \
     _get_title_by_category_and_subcategory, _get_subcategory_by_slug, _create_product_in_wishlist, \
-    _remove_product_from_wishlist, _get_products_in_wishlist
+    _remove_product_from_wishlist, _get_products_in_wishlist, _get_current_sort
 
 
 class IndexListView(ListView):
@@ -38,7 +38,7 @@ class ProductView(DetailView):
         product = self.object
         user = self.request.user
 
-        context["title"] = product
+        context["title"] = product.name
         context["is_size"] = _is_size(product=product)
         context["is_favorite"] = _is_favorite(
             product=product,
@@ -71,9 +71,10 @@ class ProductsByCategoryView(OrderedSearchMixin, ListView):
         category = _get_category_by_slug(
             slug=self.kwargs["category_slug"]
         )
-        context["title"] = category
+        context["title"] = category.name
         context["cat_selected"] = category
         context["subcategories"] = _get_subcategories()
+        context["sort"] = _get_current_sort(request=self.request)
         return context
 
 
@@ -103,6 +104,7 @@ class ProductsBySubcategoryView(OrderedSearchMixin, ListView):
             slug=subcategory_slug
         )
         context["subcategories"] = _get_subcategories()
+        context["sort"] = _get_current_sort(request=self.request)
         return context
 
 
@@ -133,6 +135,7 @@ class ProductsBySearchView(OrderedSearchMixin, ListView):
         context = super().get_context_data(**kwargs)
         context["title"] = "Товары по запросу"
         context["current_query"] = self.request.GET.get("query")
+        context["sort"] = _get_current_sort(request=self.request)
         return context
 
 
@@ -174,7 +177,7 @@ def remove_from_wishlist_view(
 def message_about_wishlist_view(request: HttpRequest) -> HttpResponse:
     return render(
         request,
-        "commerce/message_about_permission.html",
+        "message_about_permission.html",
         context={
             "title": "Избранное недоступно",
             "section": "избранное"
@@ -182,7 +185,7 @@ def message_about_wishlist_view(request: HttpRequest) -> HttpResponse:
     )
 
 
-class FavoriteProductsView(ListView):
+class FavoriteProductsView(WishlistLoginRequiredMixin, ListView):
     template_name = "commerce/list_of_products.html"
     context_object_name = "products"
     paginate_by = 6

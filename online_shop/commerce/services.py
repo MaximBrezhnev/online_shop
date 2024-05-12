@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.http import HttpRequest
 
 from cart.models import ProductInCart
 from commerce.models import Product, Category, Subcategory, FavoriteProduct
@@ -114,3 +115,7 @@ def _remove_product_from_wishlist(product_id: str, user_id: str) -> FavoriteProd
 def _get_products_in_wishlist(user: get_user_model()) -> list[Product]:
     favorite_products_ids = [p.product_id for p in user.favoriteproduct_set.all()]
     return Product.in_stock.filter(pk__in=favorite_products_ids)
+
+
+def _get_current_sort(request: HttpRequest) -> str:
+    return request.GET.get("sort", None)

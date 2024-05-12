@@ -4,6 +4,7 @@ from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, CreateView
 
 from cart.forms import CheckoutForm
+from cart.mixins import CartLoginRequiredMixin
 from cart.services import _get_available_sizes, _change_size_and_number, \
     _create_product_in_cart, _remove_product, _get_products_in_cart_by_user, \
     _change_size_and_number_when_increasing, _change_size_and_number_when_reducing, _find_total_price, \
@@ -80,7 +81,7 @@ def remove_from_cart_view(request: HttpRequest) -> HttpResponseRedirect:
     )
 
 
-class CartView(ListView):
+class CartView(CartLoginRequiredMixin, ListView):
     template_name = "cart/cart.html"
     context_object_name = "products_in_cart"
     paginate_by = 3
@@ -99,7 +100,7 @@ class CartView(ListView):
 def message_about_cart_view(request: HttpRequest) -> HttpResponse:
     return render(
         request,
-        "commerce/message_about_permission.html",
+        "message_about_permission.html",
         context={
             "title": "Корзина недоступна",
             "section": "корзина"

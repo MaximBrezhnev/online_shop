@@ -17,6 +17,7 @@ class ProductInCart(models.Model):
 
 
 class Order(models.Model):
+
     class Status(models.IntegerChoices):
         ON_WAY = 0, 'В Пути'
         DELIVERED = 1, 'Доставлен'

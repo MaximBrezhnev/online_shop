@@ -4,7 +4,7 @@ from cart.models import ProductInCart, Order, OrderItem
 
 
 @admin.register(ProductInCart)
-class ProductInCart(admin.ModelAdmin):
+class ProductInCartAdmin(admin.ModelAdmin):
     list_display = ("product", "user", "size", "number", )
     list_per_page = 20
 

@@ -1,5 +1,4 @@
 from smtplib import SMTPRecipientsRefused
-from typing import Optional
 
 from celery import shared_task
 from django.contrib.auth import get_user_model
@@ -9,7 +8,7 @@ from online_shop.settings import DEFAULT_FROM_EMAIL, USER_CONFIRMATION_TIMEOUT
 
 
 @shared_task
-def send_email_with_link(confirm_link: str, email: str) -> Optional[bool]:
+def send_email_with_link(confirm_link: str, email: str) -> None:
     try:
         send_mail(
             subject="Пожалуйста, подтвердите регистрацию",
@@ -19,14 +18,11 @@ def send_email_with_link(confirm_link: str, email: str) -> Optional[bool]:
             recipient_list=[email, ]
         )
         _delete_inactive_user.apply_async(
-            args=(email,),
+            args=(email, ),
             countdown=USER_CONFIRMATION_TIMEOUT + 5
         )
     except SMTPRecipientsRefused:
-        _delete_inactive_user(
-            email=email
-        )
-        return False
+        _delete_inactive_user(email=email)
 
 
 @shared_task

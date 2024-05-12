@@ -31,15 +31,13 @@
             </div>
             <div class="col-md-3 text-right">
                 <a href="{% url 'search' %}" class="mr-3"><i class="fas fa-search text-white"></i></a>
+                <a href="{% url 'list_of_products_in_cart' %}" class="mr-3"><i class="fas fa-shopping-cart text-white"></i></a>
                 {% if user.is_authenticated %}
-                    <a href="{% url 'list_of_products_in_cart' %}" class="mr-3"><i class="fas fa-shopping-cart text-white"></i></a>
                     <a href="{{ user.get_absolute_url }}" class="mr-3"><i class="fa fa-user text-white"></i></a>
-                    <a href="{% url 'list_of_favorite' %}" class="mr-3"><i class="fas fa-heart text-white"></i></a>
                 {% else %}
-                    <a href="{% url 'message_about_cart' %}" class="mr-3"><i class="fas fa-shopping-cart text-white"></i></a>
                     <a href="{% url 'users:login' %}" class="mr-3" style="text-decoration: none; font-weight: normal; color:white;" onmouseout="this.style.fontWeight='normal"><i class="fa fa-sign-in text-white"></i> Войти</a>
-                    <a href="{% url 'message_about_wishlist' %}" class="mr-3"><i class="fas fa-heart text-white"></i></a>
                 {% endif %}
+                    <a href="{% url 'list_of_favorite' %}" class="mr-3"><i class="fas fa-heart text-white"></i></a>
             </div>
         </nav>
 

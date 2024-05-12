@@ -11,7 +11,7 @@ from django.views.generic import FormView, UpdateView
 from online_shop.settings import USER_CONFIRMATION_KEY
 from users import tasks
 from users.forms import LoginForm, RegisterForm, ProfileForm, UserPasswordChangeForm
-from users.mixins import CustomLoginRequiredMixin
+from users.mixins import ProfileLoginRequiredMixin
 from users.services import _login, _create_inactive_user, _create_link, _activate_user
 
 
@@ -63,18 +63,8 @@ class RegisterView(FormView):
         )
 
         confirm_link = _create_link(self.request, user)
-        result_of_sending = tasks.send_email_with_link.delay(confirm_link, user.email)
-        if result_of_sending is None:
-            return super().form_valid(form)
-        form.add_error("email", "Данный адрес электронной почты не существует")
-        return render(
-            self.request,
-            "users/registration.html",
-            context={
-                "title": "Регистрация",
-                "form": form
-            }
-        )
+        tasks.send_email_with_link.delay(confirm_link, user.email)
+        return super().form_valid(form)
 
 
 def register_confirm_view(request: HttpRequest, token: str) -> HttpResponseRedirect:
@@ -103,12 +93,11 @@ def email_was_sent_view(request: HttpRequest) -> HttpResponse:
     )
 
 
-class ProfileView(CustomLoginRequiredMixin, UpdateView):
+class ProfileView(ProfileLoginRequiredMixin, UpdateView):
     pk_url_kwarg = "user_id"
     model = get_user_model()
     form_class = ProfileForm
     template_name = "users/profile.html"
-    success_url = reverse_lazy("users:profile")
     extra_context = {
         "title": "Профиль"
     }

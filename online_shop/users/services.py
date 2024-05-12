@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, get_user_model, login
 from django.core.cache import cache
 from django.http import HttpRequest
 from django.shortcuts import get_object_or_404
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 
 from online_shop.settings import USER_CONFIRMATION_KEY, USER_CONFIRMATION_TIMEOUT
 from users.forms import LoginForm
@@ -37,7 +37,7 @@ def _create_inactive_user(email: str, password: str) -> get_user_model():
     return user
 
 
-def _create_link(request: HttpRequest, user: get_user_model()) -> str:
+def _create_cache_entry(user: get_user_model()) -> str:
     token = uuid.uuid4().hex
     redis_key = USER_CONFIRMATION_KEY.format(token=token)
     cache.set(
@@ -45,9 +45,14 @@ def _create_link(request: HttpRequest, user: get_user_model()) -> str:
         {"user_id": user.id},
         timeout=USER_CONFIRMATION_TIMEOUT,
     )
+    return token
+
+
+def _create_link(request: HttpRequest, user: get_user_model()) -> str:
+    token = _create_cache_entry(user=user)
 
     confirm_link = request.build_absolute_uri(
-        reverse_lazy(
+        reverse(
             "users:register_confirm", kwargs={"token": token},
         )
     )

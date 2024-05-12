@@ -1,9 +1,13 @@
+import os
 from pathlib import Path
 
+from dotenv import load_dotenv
+
+load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-zhv80f24r@p)ym2xmrm*4=ocy!7#9za2ti1t%@pjd8eo7$_xi7'
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 DEBUG = True
 
@@ -57,10 +61,10 @@ WSGI_APPLICATION = 'online_shop.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "postgres",
-        "USER": "postgres",
-        "PASSWORD": "postgres",
-        "HOST": "local_db",  # local_db
+        "NAME": os.getenv("POSTGRES_DB"),
+        "USER": os.getenv("POSTGRES_NAME"),
+        "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
+        "HOST": "local_db",
         "PORT": 5432,
     }
 }
@@ -104,8 +108,8 @@ EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.mail.ru"
 EMAIL_PORT = 2525
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = "max.b04.03@mail.ru"
-EMAIL_HOST_PASSWORD = "iirCXkYWcgb3b2M9NdkK"
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 SERVER_EMAIL = EMAIL_HOST_USER
 EMAIL_ADMIN = EMAIL_HOST_USER
@@ -118,7 +122,7 @@ CASHES = {
 }
 
 USER_CONFIRMATION_KEY = "user_confirmation_{token}"
-USER_CONFIRMATION_TIMEOUT = 20  # 300
+USER_CONFIRMATION_TIMEOUT = 300
 
 CELERY_BROKER_URL = "redis://redis:6379/0"
 
