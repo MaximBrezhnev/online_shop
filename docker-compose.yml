@@ -1,9 +1,11 @@
 version: "3.0"
 
 services:
-  local_db:
+  db:
     image: postgres:16-alpine
     restart: no
+    volumes:
+      - ~/.pg/pg_data/online_shop:/var/lib/postgresql/data
     env_file:
       - .env
     ports:
@@ -17,13 +19,28 @@ services:
       - custom
 
   app:
-    restart: no
-    depends_on:
-      - local_db
     build:
       context: .
+    restart: no
+    depends_on:
+      - db
+    env_file: #
+      - .env
     ports:
       - "8000:8000"
+    volumes:
+      - static_volume:./online_shop/static
+      - media_volume:./online_shop/media
+    command: >
+      bash -c \\
+      "./manage.py collectstatic --noinput &&  \\
+      ./manage.py migrate && \\
+      gunicorn -b 0.0.0.0:8000 online_shop.wsgi:application && \\
+      ./manage.py loaddata fixtures/commerce_category.json && \\
+      ./manage.py loaddata fixtures/commerce_subcategory.json && \\
+      ./manage.py loaddata fixtures/commerce_product.json && \\
+      ./manage.py loaddata fixtures/commerce_size_and_number.json && \\
+      ./manage.py createsuperuser --email ${DJANGO_ADMIN_USER_EMAIL} --username root --noinput"
     networks:
       - custom
 
@@ -31,12 +48,26 @@ services:
     restart: no
     depends_on:
       - redis
+      - app
     build:
       context: .
     networks:
       - custom
     command: [ "celery", "--workdir=./online_shop", "-A", "online_shop", "worker"]
 
+  nginx:
+    build:
+      dockerfile: ./Dockerfile
+      context: ./docker/nginx
+    depends_on:
+      - worker
+    ports:
+      - "80:80"
+
+
+volumes:
+  static_volume:
+  media_volume:
 
 networks:
   custom:

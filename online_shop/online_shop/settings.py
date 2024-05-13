@@ -9,9 +9,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ["127.0.0.1", "localhost", "0.0.0.0", ]
+ALLOWED_HOSTS = ["127.0.0.1", "localhost", "0.0.0.0", "31.128.36.78"]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -64,7 +64,7 @@ DATABASES = {
         "NAME": os.getenv("POSTGRES_DB"),
         "USER": os.getenv("POSTGRES_NAME"),
         "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
-        "HOST": "local_db",
+        "HOST": "db",
         "PORT": 5432,
     }
 }
