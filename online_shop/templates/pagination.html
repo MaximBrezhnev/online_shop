@@ -1,31 +1,31 @@
 <div class="row">
-<div class="col-md-12 text-center">
-		{% if paginator.page_range|length > 1 %}
-		{% if page_obj.has_previous %}
-			{% if sort %}
-			<a href="?page={{ page_obj.previous_page_number }}&sort={{sort}}"  style="font-size: 24px; color: grey; text-decoration: none; font-weight: normal;" onmouseout="this.style.fontWeight='normal'">&lt;</a>
-			{% else %}
-			<a href="?page={{ page_obj.previous_page_number }}"  style="font-size: 24px; color: grey; text-decoration: none; font-weight: normal;" onmouseout="this.style.fontWeight='normal'">&lt;</a>
-			{% endif %}
-		{% endif %}
-		{% for p in paginator.page_range %}
-		{% if p == page_obj.number %}
-            <span style="font-size: 24px; color: grey;">{{ p }}</span>
-		{% elif p >= page_obj.number|add:-1 and p <= page_obj.number|add:1 %}
-			{% if sort %}
-			<a href="?page={{ p }}&sort={{sort}}" style="font-size: 24px; color: grey; text-decoration: none; font-weight: normal;" onmouseout="this.style.fontWeight='normal'">{{ p }}</a>
-			{% else %}
-			<a href="?page={{ p }}" style="font-size: 24px; color: grey; text-decoration: none; font-weight: normal;" onmouseout="this.style.fontWeight='normal'">{{ p }}</a>
-			{% endif %}
-		{% endif %}
-        {% endfor %}
-		{% if page_obj.has_next %}
-			{% if sort %}
-			<a href="?page={{ page_obj.next_page_number}}&sort={{sort}}" style="font-size: 24px; color: grey; text-decoration: none; font-weight: normal;" onmouseout="this.style.fontWeight='normal'">&gt;</a>
-			{% else %}
-			<a href="?page={{ page_obj.next_page_number}}" style="font-size: 24px; color: grey; text-decoration: none; font-weight: normal;" onmouseout="this.style.fontWeight='normal'">&gt;</a>
-			{% endif %}
-		{% endif %}
-		{% endif %}
-</div>
+    <div class="col-md-12 text-center">
+        {% if paginator.page_range|length > 1 %}
+            {% if page_obj.has_previous %}
+                {% if sort %}
+                    <a href="?page={{ page_obj.previous_page_number }}&sort={{sort}}"  style="font-size: 24px; color: grey; text-decoration: none; font-weight: normal;" onmouseout="this.style.fontWeight='normal'">&lt;</a>
+                {% else %}
+                    <a href="?page={{ page_obj.previous_page_number }}"  style="font-size: 24px; color: grey; text-decoration: none; font-weight: normal;" onmouseout="this.style.fontWeight='normal'">&lt;</a>
+                {% endif %}
+            {% endif %}
+            {% for p in paginator.page_range %}
+                {% if p == page_obj.number %}
+                    <span style="font-size: 24px; color: grey;">{{ p }}</span>
+                {% elif p >= page_obj.number|add:-1 and p <= page_obj.number|add:1 %}
+                    {% if sort %}
+                        <a href="?page={{ p }}&sort={{sort}}" style="font-size: 24px; color: grey; text-decoration: none; font-weight: normal;" onmouseout="this.style.fontWeight='normal'">{{ p }}</a>
+                    {% else %}
+                        <a href="?page={{ p }}" style="font-size: 24px; color: grey; text-decoration: none; font-weight: normal;" onmouseout="this.style.fontWeight='normal'">{{ p }}</a>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+            {% if page_obj.has_next %}
+                {% if sort %}
+                    <a href="?page={{ page_obj.next_page_number}}&sort={{sort}}" style="font-size: 24px; color: grey; text-decoration: none; font-weight: normal;" onmouseout="this.style.fontWeight='normal'">&gt;</a>
+                {% else %}
+                    <a href="?page={{ page_obj.next_page_number}}" style="font-size: 24px; color: grey; text-decoration: none; font-weight: normal;" onmouseout="this.style.fontWeight='normal'">&gt;</a>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+    </div>
 </div>

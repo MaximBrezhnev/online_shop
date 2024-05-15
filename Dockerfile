@@ -10,6 +10,3 @@ COPY . .
 RUN mkdir online_shop/static
 
 RUN pip install -r requirements.txt
-
-CMD ["gunicorn", "-b", "0.0.0.0:8000", "online_shop.wsgi:application"]
-

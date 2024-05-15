@@ -1,8 +1,7 @@
 from typing import Any
 
-from django.http import HttpRequest
-
 from commerce.models import Category
+from django.http import HttpRequest
 
 
 def category_context(request: HttpRequest) -> dict[str:Any]:

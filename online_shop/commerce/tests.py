@@ -1,14 +1,19 @@
 from http import HTTPStatus
 from math import ceil
 
+from cart.models import ProductInCart
+from commerce.models import Category
+from commerce.models import FavoriteProduct
+from commerce.models import Product
+from commerce.models import Subcategory
+from commerce.views import FavoriteProductsView
+from commerce.views import IndexListView
+from commerce.views import ProductsByCategoryView
+from commerce.views import ProductsBySearchView
+from commerce.views import ProductsBySubcategoryView
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
-
-from cart.models import ProductInCart
-from commerce.models import Product, FavoriteProduct, Category, Subcategory
-from commerce.views import ProductsByCategoryView, IndexListView, ProductsBySubcategoryView, ProductsBySearchView, \
-    FavoriteProductsView
 
 
 class IndexListTestCase(TestCase):
@@ -16,7 +21,7 @@ class IndexListTestCase(TestCase):
         "fixtures/commerce_category.json",
         "fixtures/commerce_subcategory.json",
         "fixtures/commerce_product.json",
-        "fixtures/commerce_sizeandnumber.json"
+        "fixtures/commerce_sizeandnumber.json",
     ]
 
     def test_home_page(self):
@@ -33,15 +38,14 @@ class IndexListTestCase(TestCase):
 
         self.assertEqual(
             list(response.context["products"]),
-            list(Product.in_stock.all())[:IndexListView.paginate_by]
+            list(Product.in_stock.all())[: IndexListView.paginate_by],
         )
 
     def test_index_list_last_page(self):
         response = self.client.get(reverse("home") + "?page=4")
 
         self.assertEqual(
-            list(response.context["products"]),
-            list(Product.in_stock.all())[18:21]
+            list(response.context["products"]), list(Product.in_stock.all())[18:21]
         )
 
 
@@ -51,7 +55,7 @@ class ProductTestCase(TestCase):
         "fixtures/commerce_subcategory.json",
         "fixtures/commerce_product.json",
         "fixtures/commerce_sizeandnumber.json",
-        "fixtures/users_user.json"
+        "fixtures/users_user.json",
     ]
 
     def setUp(self):
@@ -59,31 +63,37 @@ class ProductTestCase(TestCase):
         self.client.force_login(user)
 
     def test_product_general(self):
-        response = self.client.get(reverse("product", kwargs={"product_slug": "pidzhak"}))
+        response = self.client.get(
+            reverse("product", kwargs={"product_slug": "pidzhak"})
+        )
 
         self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertTemplateUsed(response, "commerce/product.html")
         self.assertEqual(
-            response.context["title"],
-            Product.in_stock.get(slug="pidzhak").name
+            response.context["title"], Product.in_stock.get(slug="pidzhak").name
         )
 
     def test_product_is_favorite(self):
         FavoriteProduct.objects.create(
-            user_id=2,
-            product=Product.objects.get(slug="pidzhak")
+            user_id=2, product=Product.objects.get(slug="pidzhak")
         )
-        response = self.client.get(reverse("product", kwargs={"product_slug": "pidzhak"}))
+        response = self.client.get(
+            reverse("product", kwargs={"product_slug": "pidzhak"})
+        )
 
         self.assertTrue(response.context["is_favorite"])
 
     def test_product_is_not_favorite(self):
-        response = self.client.get(reverse("product", kwargs={"product_slug": "pidzhak"}))
+        response = self.client.get(
+            reverse("product", kwargs={"product_slug": "pidzhak"})
+        )
 
         self.assertFalse(response.context["is_favorite"])
 
     def test_product_with_size_is_not_in_cart(self):
-        response = self.client.get(reverse("product", kwargs={"product_slug": "pidzhak"}))
+        response = self.client.get(
+            reverse("product", kwargs={"product_slug": "pidzhak"})
+        )
         context = response.context
 
         self.assertTrue(context["is_size"])
@@ -98,7 +108,9 @@ class ProductTestCase(TestCase):
             number=1,
         )
 
-        response = self.client.get(reverse("product", kwargs={"product_slug": "pidzhak"}))
+        response = self.client.get(
+            reverse("product", kwargs={"product_slug": "pidzhak"})
+        )
         context = response.context
 
         self.assertTrue(context["is_size"])
@@ -119,7 +131,9 @@ class ProductTestCase(TestCase):
             number=1,
         )
 
-        response = self.client.get(reverse("product", kwargs={"product_slug": "pidzhak"}))
+        response = self.client.get(
+            reverse("product", kwargs={"product_slug": "pidzhak"})
+        )
         context = response.context
 
         self.assertTrue(context["is_size"])
@@ -127,7 +141,9 @@ class ProductTestCase(TestCase):
         self.assertFalse(context["not_all_sizes_in_cart"])
 
     def test_product_without_size_is_not_in_cart(self):
-        response = self.client.get(reverse("product", kwargs={"product_slug": "remen-guess"}))
+        response = self.client.get(
+            reverse("product", kwargs={"product_slug": "remen-guess"})
+        )
         context = response.context
 
         self.assertFalse(context["is_size"])
@@ -136,12 +152,12 @@ class ProductTestCase(TestCase):
 
     def test_product_without_size_is_in_cart(self):
         ProductInCart.objects.create(
-            user_id=2,
-            product=Product.objects.get(slug="remen-guess"),
-            number=1
+            user_id=2, product=Product.objects.get(slug="remen-guess"), number=1
         )
 
-        response = self.client.get(reverse("product", kwargs={"product_slug": "remen-guess"}))
+        response = self.client.get(
+            reverse("product", kwargs={"product_slug": "remen-guess"})
+        )
         context = response.context
 
         self.assertFalse(context["is_size"])
@@ -154,14 +170,14 @@ class ProductsByCategoryTestCase(TestCase):
         "fixtures/commerce_category.json",
         "fixtures/commerce_subcategory.json",
         "fixtures/commerce_product.json",
-        "fixtures/commerce_sizeandnumber.json"
+        "fixtures/commerce_sizeandnumber.json",
     ]
 
     def test_products_by_category(self):
         slug = "muzhchinam"
-        response = self.client.get(reverse(
-            "products_by_category", kwargs={"category_slug": slug}
-        ))
+        response = self.client.get(
+            reverse("products_by_category", kwargs={"category_slug": slug})
+        )
         context = response.context
 
         self.assertEqual(response.status_code, HTTPStatus.OK)
@@ -169,57 +185,82 @@ class ProductsByCategoryTestCase(TestCase):
 
         self.assertEqual(context["title"], Category.objects.get(slug=slug).name)
         self.assertEqual(context["cat_selected"], Category.objects.get(slug=slug))
-        self.assertEqual(list(context["subcategories"]), list(Subcategory.objects.all()))
+        self.assertEqual(
+            list(context["subcategories"]), list(Subcategory.objects.all())
+        )
 
     def test_products_by_category_first_page(self):
         slug = "muzhchinam"
-        response = self.client.get(reverse(
-            "products_by_category", kwargs={"category_slug": slug}
-        ))
-        context = response.context
-
-        self.assertEqual(list(context["products"]), list(Product.in_stock.filter(category__slug=slug))[:6])
-
-    def test_products_by_category_last_page(self):
-        slug = "muzhchinam"
-        number_of_pages = ceil(len(Product.objects.filter(category__slug=slug)) / ProductsByCategoryView.paginate_by)
-        response = self.client.get(reverse(
-            "products_by_category", kwargs={"category_slug": slug}
-        ) + f"?page={number_of_pages}")
-        context = response.context
-
-        number_of_products_on_last_page = (len(Product.objects.filter(category__slug=slug)) -
-                                           ProductsByCategoryView.paginate_by) * (number_of_pages - 1)
-        self.assertEqual(list(context["products"]), list(Product.in_stock.filter(category__slug=slug))[
-                                                    -number_of_products_on_last_page:
-                                                    ])
-
-    def test_products_by_category_first_page_price_desc(self):
-        slug = "muzhchinam"
-        response = self.client.get(reverse(
-            "products_by_category", kwargs={"category_slug": slug}
-        ) + "?sort=price_desc")
+        response = self.client.get(
+            reverse("products_by_category", kwargs={"category_slug": slug})
+        )
         context = response.context
 
         self.assertEqual(
             list(context["products"]),
-            list(Product.in_stock.filter(category__slug=slug).order_by("-price"))[:ProductsByCategoryView.paginate_by]
+            list(Product.in_stock.filter(category__slug=slug))[:6],
+        )
+
+    def test_products_by_category_last_page(self):
+        slug = "muzhchinam"
+        number_of_pages = ceil(
+            len(Product.objects.filter(category__slug=slug))
+            / ProductsByCategoryView.paginate_by
+        )
+        response = self.client.get(
+            reverse("products_by_category", kwargs={"category_slug": slug})
+            + f"?page={number_of_pages}"
+        )
+        context = response.context
+
+        number_of_products_on_last_page = (
+            len(Product.objects.filter(category__slug=slug))
+            - ProductsByCategoryView.paginate_by
+        ) * (number_of_pages - 1)
+        self.assertEqual(
+            list(context["products"]),
+            list(Product.in_stock.filter(category__slug=slug))[
+                -number_of_products_on_last_page:
+            ],
+        )
+
+    def test_products_by_category_first_page_price_desc(self):
+        slug = "muzhchinam"
+        response = self.client.get(
+            reverse("products_by_category", kwargs={"category_slug": slug})
+            + "?sort=price_desc"
+        )
+        context = response.context
+
+        self.assertEqual(
+            list(context["products"]),
+            list(Product.in_stock.filter(category__slug=slug).order_by("-price"))[
+                : ProductsByCategoryView.paginate_by
+            ],
         )
 
     def test_products_by_category_last_page_price_desc(self):
         slug = "muzhchinam"
-        number_of_pages = ceil(len(Product.objects.filter(category__slug=slug)) / ProductsByCategoryView.paginate_by)
-        response = self.client.get(reverse(
-            "products_by_category", kwargs={"category_slug": slug}
-        ) + f"?page={number_of_pages}&sort=price_desc")
+        number_of_pages = ceil(
+            len(Product.objects.filter(category__slug=slug))
+            / ProductsByCategoryView.paginate_by
+        )
+        response = self.client.get(
+            reverse("products_by_category", kwargs={"category_slug": slug})
+            + f"?page={number_of_pages}&sort=price_desc"
+        )
         context = response.context
 
-        number_of_products_on_last_page = (len(Product.objects.filter(category__slug=slug)) -
-                                           ProductsByCategoryView.paginate_by) * (number_of_pages - 1)
-        self.assertEqual(list(context["products"]), list(Product.in_stock.filter(category__slug=slug)
-                                                         .order_by("-price"))[
-                                                    -number_of_products_on_last_page:
-                                                    ])
+        number_of_products_on_last_page = (
+            len(Product.objects.filter(category__slug=slug))
+            - ProductsByCategoryView.paginate_by
+        ) * (number_of_pages - 1)
+        self.assertEqual(
+            list(context["products"]),
+            list(Product.in_stock.filter(category__slug=slug).order_by("-price"))[
+                -number_of_products_on_last_page:
+            ],
+        )
 
 
 class ProductsBySubcategoryTestCase(TestCase):
@@ -227,7 +268,7 @@ class ProductsBySubcategoryTestCase(TestCase):
         "fixtures/commerce_category.json",
         "fixtures/commerce_subcategory.json",
         "fixtures/commerce_product.json",
-        "fixtures/commerce_sizeandnumber.json"
+        "fixtures/commerce_sizeandnumber.json",
     ]
 
     def test_products_by_subcategory(self):
@@ -235,9 +276,12 @@ class ProductsBySubcategoryTestCase(TestCase):
         subcat_slug = "obuv"
         title = "Мужчинам: обувь"
 
-        response = self.client.get(reverse(
-            "products_by_subcategory", kwargs={"category_slug": cat_slug, "subcategory_slug": subcat_slug}
-        ))
+        response = self.client.get(
+            reverse(
+                "products_by_subcategory",
+                kwargs={"category_slug": cat_slug, "subcategory_slug": subcat_slug},
+            )
+        )
         context = response.context
 
         self.assertEqual(response.status_code, HTTPStatus.OK)
@@ -245,32 +289,55 @@ class ProductsBySubcategoryTestCase(TestCase):
 
         self.assertEqual(context["title"], title)
         self.assertEqual(context["cat_selected"], Category.objects.get(slug=cat_slug))
-        self.assertEqual(context["subcategory_selected"], Subcategory.objects.get(slug=subcat_slug))
-        self.assertEqual(list(context["subcategories"]), list(Subcategory.objects.all()))
+        self.assertEqual(
+            context["subcategory_selected"], Subcategory.objects.get(slug=subcat_slug)
+        )
+        self.assertEqual(
+            list(context["subcategories"]), list(Subcategory.objects.all())
+        )
 
     def test_products_by_subcategory_first_page(self):
         cat_slug = "muzhchinam"
         subcat_slug = "obuv"
-        response = self.client.get(reverse(
-            "products_by_subcategory", kwargs={"category_slug": cat_slug, "subcategory_slug": subcat_slug}
-        ))
+        response = self.client.get(
+            reverse(
+                "products_by_subcategory",
+                kwargs={"category_slug": cat_slug, "subcategory_slug": subcat_slug},
+            )
+        )
         context = response.context
 
-        self.assertEqual(list(context["products"]), list(Product.in_stock.filter(
-            category__slug=cat_slug, subcategory__slug=subcat_slug,
-        ))[:ProductsBySubcategoryView.paginate_by])
+        self.assertEqual(
+            list(context["products"]),
+            list(
+                Product.in_stock.filter(
+                    category__slug=cat_slug,
+                    subcategory__slug=subcat_slug,
+                )
+            )[: ProductsBySubcategoryView.paginate_by],
+        )
 
     def test_products_by_subcategory_first_page_price_asc(self):
         cat_slug = "muzhchinam"
         subcat_slug = "obuv"
-        response = self.client.get(reverse(
-            "products_by_subcategory", kwargs={"category_slug": cat_slug, "subcategory_slug": subcat_slug}
-        ) + "?sort=price_asc")
+        response = self.client.get(
+            reverse(
+                "products_by_subcategory",
+                kwargs={"category_slug": cat_slug, "subcategory_slug": subcat_slug},
+            )
+            + "?sort=price_asc"
+        )
         context = response.context
 
-        self.assertEqual(list(context["products"]), list(Product.in_stock.filter(
-            category__slug=cat_slug, subcategory__slug=subcat_slug,
-        ).order_by("price"))[:ProductsBySubcategoryView.paginate_by])
+        self.assertEqual(
+            list(context["products"]),
+            list(
+                Product.in_stock.filter(
+                    category__slug=cat_slug,
+                    subcategory__slug=subcat_slug,
+                ).order_by("price")
+            )[: ProductsBySubcategoryView.paginate_by],
+        )
 
 
 class SearchTestCase(TestCase):
@@ -289,7 +356,7 @@ class ProductsBySearchTestCase(TestCase):
         "fixtures/commerce_category.json",
         "fixtures/commerce_subcategory.json",
         "fixtures/commerce_product.json",
-        "fixtures/commerce_sizeandnumber.json"
+        "fixtures/commerce_sizeandnumber.json",
     ]
 
     def test_products_by_search(self):
@@ -308,16 +375,22 @@ class ProductsBySearchTestCase(TestCase):
 
         self.assertEqual(
             list(response.context["products"]),
-            list(Product.in_stock.filter(name__istartswith=query))[:ProductsBySearchView.paginate_by]
+            list(Product.in_stock.filter(name__istartswith=query))[
+                : ProductsBySearchView.paginate_by
+            ],
         )
 
     def test_products_by_search_first_page_date(self):
         query = "кр"
-        response = self.client.get(reverse("products_by_search") + f"?query={query}&sort=date")
+        response = self.client.get(
+            reverse("products_by_search") + f"?query={query}&sort=date"
+        )
 
         self.assertEqual(
             list(response.context["products"]),
-            list(Product.in_stock.filter(name__istartswith=query))[:ProductsBySearchView.paginate_by]
+            list(Product.in_stock.filter(name__istartswith=query))[
+                : ProductsBySearchView.paginate_by
+            ],
         )
 
 
@@ -327,7 +400,7 @@ class AddToWishlistTestCase(TestCase):
         "fixtures/commerce_subcategory.json",
         "fixtures/commerce_product.json",
         "fixtures/commerce_sizeandnumber.json",
-        "fixtures/users_user.json"
+        "fixtures/users_user.json",
     ]
 
     def test_add_to_wishlist(self):
@@ -339,8 +412,7 @@ class AddToWishlistTestCase(TestCase):
 
         response = self.client.get(
             reverse(
-                "add_to_wishlist",
-                kwargs={"product_id": product_id, "user_id": user_id}
+                "add_to_wishlist", kwargs={"product_id": product_id, "user_id": user_id}
             )
         )
 
@@ -349,13 +421,15 @@ class AddToWishlistTestCase(TestCase):
             response,
             reverse(
                 "product",
-                kwargs={"product_slug": Product.objects.get(pk=product_id).slug}
-            )
+                kwargs={"product_slug": Product.objects.get(pk=product_id).slug},
+            ),
         )
 
-        self.assertTrue(FavoriteProduct.objects.filter(
-            product_id=product_id, user_id=user_id
-        ).exists())
+        self.assertTrue(
+            FavoriteProduct.objects.filter(
+                product_id=product_id, user_id=user_id
+            ).exists()
+        )
 
     def test_add_to_wishlist_without_auth(self):
         response = self.client.get(reverse("message_about_wishlist"))
@@ -373,35 +447,36 @@ class RemoveFromWishlistTestCase(TestCase):
         "fixtures/commerce_subcategory.json",
         "fixtures/commerce_product.json",
         "fixtures/commerce_sizeandnumber.json",
-        "fixtures/users_user.json"
+        "fixtures/users_user.json",
     ]
 
     def test_remove_from_wishlist(self):
         user_id = 2
         product_id = 59
 
-        FavoriteProduct.objects.create(
-            product_id=product_id,
-            user_id=user_id
-        )
+        FavoriteProduct.objects.create(product_id=product_id, user_id=user_id)
 
-        response = self.client.get(reverse("remove_from_wishlist", kwargs={
-            "product_id": product_id, "user_id": user_id
-        }
-                                           ))
+        response = self.client.get(
+            reverse(
+                "remove_from_wishlist",
+                kwargs={"product_id": product_id, "user_id": user_id},
+            )
+        )
 
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
         self.assertRedirects(
             response,
             reverse(
                 "product",
-                kwargs={"product_slug": Product.objects.get(pk=product_id).slug}
-            )
+                kwargs={"product_slug": Product.objects.get(pk=product_id).slug},
+            ),
         )
 
-        self.assertFalse(FavoriteProduct.objects.filter(
-            product_id=product_id, user_id=user_id
-        ).exists())
+        self.assertFalse(
+            FavoriteProduct.objects.filter(
+                product_id=product_id, user_id=user_id
+            ).exists()
+        )
 
 
 class FavoriteProductsTestCase(TestCase):
@@ -410,7 +485,7 @@ class FavoriteProductsTestCase(TestCase):
         "fixtures/commerce_subcategory.json",
         "fixtures/commerce_product.json",
         "fixtures/commerce_sizeandnumber.json",
-        "fixtures/users_user.json"
+        "fixtures/users_user.json",
     ]
 
     def test_favorite_products(self):
@@ -434,15 +509,18 @@ class FavoriteProductsTestCase(TestCase):
         self.assertEqual(context["header"], "Избранное")
         self.assertEqual(
             context["message"],
-            ("Учтите, что "
-             "товары, которых в данный момент нет в наличии, "
-             "не отображаются в избранном")
+            (
+                "Учтите, что "
+                "товары, которых в данный момент нет в наличии, "
+                "не отображаются в избранном"
+            ),
         )
 
         self.assertEqual(
             list(context["products"]),
-            list(Product.objects.filter(pk__in=[product_id_1, product_id_2]))
-            [:FavoriteProductsView.paginate_by]
+            list(Product.objects.filter(pk__in=[product_id_1, product_id_2]))[
+                : FavoriteProductsView.paginate_by
+            ],
         )
 
     def test_message_about_permission(self):
@@ -451,7 +529,6 @@ class FavoriteProductsTestCase(TestCase):
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
         self.assertRedirects(
             response,
-            reverse("message_about_wishlist") +
-            "?next=/commerce/wishlist/list-of-favorite/"
+            reverse("message_about_wishlist")
+            + "?next=/commerce/wishlist/list-of-favorite/",
         )
-

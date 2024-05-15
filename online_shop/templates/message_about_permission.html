@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container message">
-<p>
-    Для возможности посмотреть раздел "{{section}}"
-    и добавлять туда товары
-    <a href="{% url 'users:login'%}">войдите</a>
-    или
-    <a href="{% url 'users:registration' %}">зарегистрируйтесь</a>
-</p>
-</div>
+    <div class="container message">
+        <p>
+            Для возможности посмотреть раздел "{{section}}"
+            и добавлять туда товары
+            <a href="{% url 'users:login'%}">войдите</a>
+            или
+            <a href="{% url 'users:registration' %}">зарегистрируйтесь</a>
+        </p>
+    </div>
 {% endblock %}

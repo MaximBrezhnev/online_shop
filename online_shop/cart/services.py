@@ -1,9 +1,11 @@
 from typing import Optional
 
+from cart.models import Order
+from cart.models import OrderItem
+from cart.models import ProductInCart
+from commerce.models import Product
+from commerce.models import SizeAndNumber
 from django.contrib.auth import get_user_model
-
-from cart.models import ProductInCart, Order, OrderItem
-from commerce.models import Product, SizeAndNumber
 
 
 def _get_product_by_product_id(product_id: str) -> Product:
@@ -22,7 +24,7 @@ def _get_available_sizes(user_id: str, product_id: str) -> list[int]:
                     user_id=user_id,
                     size=item.size,
                 )
-            except:
+            except ProductInCart.DoesNotExist:
                 sizes.append(item.size)
     return sizes
 
@@ -36,10 +38,7 @@ def _change_size_and_number(product_id: str) -> None:
 
 
 def _create_product_in_cart(
-        product_id: str,
-        user_id: str,
-        number: int,
-        size: Optional[str] = None
+    product_id: str, user_id: str, number: int, size: Optional[str] = None
 ) -> ProductInCart:
     if size is None:
         return ProductInCart.objects.create(
@@ -48,39 +47,32 @@ def _create_product_in_cart(
             number=number,
         )
     return ProductInCart.objects.create(
-            product_id=product_id,
-            user_id=user_id,
-            size=size,
-            number=number,
-        )
-
-
-def _get_product_in_cart(
-        product_id: str,
-        user_id: str,
-        size: Optional[str] = None
-) -> ProductInCart:
-    if size is None:
-        return ProductInCart.objects.get(
-            product_id=product_id,
-            user_id=user_id
-        )
-    return ProductInCart.objects.get(
         product_id=product_id,
         user_id=user_id,
-        size=size
+        size=size,
+        number=number,
     )
 
 
-def _get_size_and_number(product_in_cart: ProductInCart, size: Optional[str] =  None) -> SizeAndNumber:
+def _get_product_in_cart(
+    product_id: str, user_id: str, size: Optional[str] = None
+) -> ProductInCart:
+    if size is None:
+        return ProductInCart.objects.get(product_id=product_id, user_id=user_id)
+    return ProductInCart.objects.get(product_id=product_id, user_id=user_id, size=size)
+
+
+def _get_size_and_number(
+    product_in_cart: ProductInCart, size: Optional[str] = None
+) -> SizeAndNumber:
     if size is None:
         return product_in_cart.product.size_and_number_set.all()[0]
-    return product_in_cart.product.size_and_number_set.get(
-            size=size
-        )
+    return product_in_cart.product.size_and_number_set.get(size=size)
 
 
-def _restore_size_and_number(product_in_cart: ProductInCart, size: Optional[str] = None) -> None:
+def _restore_size_and_number(
+    product_in_cart: ProductInCart, size: Optional[str] = None
+) -> None:
     size_and_number = _get_size_and_number(product_in_cart, size)
     size_and_number.number += product_in_cart.number
     size_and_number.save()
@@ -88,30 +80,23 @@ def _restore_size_and_number(product_in_cart: ProductInCart, size: Optional[str]
 
 def _remove_product(product_id: str, user_id: str, size: Optional[str]) -> None:
     removed_product = _get_product_in_cart(
-        product_id=product_id,
-        user_id=user_id,
-        size=size
+        product_id=product_id, user_id=user_id, size=size
     )
     _restore_size_and_number(product_in_cart=removed_product, size=size)
     removed_product.delete()
 
 
 def _get_products_in_cart_by_user(user: get_user_model()) -> list[ProductInCart]:
-    return ProductInCart.objects.filter(
-        user=user
-    )
+    return ProductInCart.objects.filter(user=user)
 
 
-def _change_size_and_number_when_increasing(product_id: str, user_id: str, size: Optional[str]) -> None:
+def _change_size_and_number_when_increasing(
+    product_id: str, user_id: str, size: Optional[str]
+) -> None:
     product_in_cart = _get_product_in_cart(
-        product_id=product_id,
-        user_id=user_id,
-        size=size
+        product_id=product_id, user_id=user_id, size=size
     )
-    size_and_number = _get_size_and_number(
-        product_in_cart=product_in_cart,
-        size=size
-    )
+    size_and_number = _get_size_and_number(product_in_cart=product_in_cart, size=size)
     if size_and_number.number > 0:
         size_and_number.number -= 1
         size_and_number.save()
@@ -119,16 +104,13 @@ def _change_size_and_number_when_increasing(product_id: str, user_id: str, size:
         product_in_cart.save()
 
 
-def _change_size_and_number_when_reducing(product_id: str, user_id: str, size: Optional[str]) -> None:
+def _change_size_and_number_when_reducing(
+    product_id: str, user_id: str, size: Optional[str]
+) -> None:
     product_in_cart = _get_product_in_cart(
-        product_id=product_id,
-        user_id=user_id,
-        size=size
+        product_id=product_id, user_id=user_id, size=size
     )
-    size_and_number = _get_size_and_number(
-        product_in_cart=product_in_cart,
-        size=size
-    )
+    size_and_number = _get_size_and_number(product_in_cart=product_in_cart, size=size)
     if product_in_cart.number > 1:
         size_and_number.number += 1
         size_and_number.save()
@@ -149,9 +131,7 @@ def _create_order_items(user: get_user_model(), order: Order) -> None:
 
     for p in products_in_cart:
         order_item = OrderItem.objects.create(
-            product=p.product,
-            number=p.number,
-            order=order
+            product=p.product, number=p.number, order=order
         )
         if p.size:
             order_item.size = p.size

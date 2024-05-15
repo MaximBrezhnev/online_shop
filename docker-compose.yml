@@ -1,9 +1,7 @@
-version: "3.0"
-
 services:
   db:
     image: postgres:16-alpine
-    restart: no
+    restart: always
     volumes:
       - ~/.pg/pg_data/online_shop:/var/lib/postgresql/data
     env_file:
@@ -15,37 +13,38 @@ services:
 
   redis:
     image: redis
+    restart: always
     networks:
       - custom
 
   app:
     build:
       context: .
-    restart: no
+    working_dir: /app/online_shop
+    restart: always
     depends_on:
       - db
-    env_file: #
+    env_file:
       - .env
     ports:
       - "8000:8000"
     volumes:
-      - static_volume:./online_shop/static
-      - media_volume:./online_shop/media
+      - static_volume:/app/online_shop/static
+      - media_volume:/app/online_shop/media
     command: >
-      bash -c \\
-      "./manage.py collectstatic --noinput &&  \\
-      ./manage.py migrate && \\
-      gunicorn -b 0.0.0.0:8000 online_shop.wsgi:application && \\
-      ./manage.py loaddata fixtures/commerce_category.json && \\
-      ./manage.py loaddata fixtures/commerce_subcategory.json && \\
-      ./manage.py loaddata fixtures/commerce_product.json && \\
-      ./manage.py loaddata fixtures/commerce_size_and_number.json && \\
-      ./manage.py createsuperuser --email ${DJANGO_ADMIN_USER_EMAIL} --username root --noinput"
+      bash -c "python3 manage.py collectstatic --noinput &&
+      python3 manage.py migrate &&
+      python3 manage.py loaddata fixtures/commerce_category.json &&
+      python3 manage.py loaddata fixtures/commerce_subcategory.json &&
+      python3 manage.py loaddata fixtures/commerce_product.json &&
+      python3 manage.py loaddata fixtures/commerce_sizeandnumber.json &&
+      python3 manage.py loaddata fixtures/users_user.json &&
+      gunicorn -b 0.0.0.0:8000 online_shop.wsgi:application"
     networks:
       - custom
 
   worker:
-    restart: no
+    restart: always
     depends_on:
       - redis
       - app
@@ -58,11 +57,17 @@ services:
   nginx:
     build:
       dockerfile: ./Dockerfile
-      context: ./docker/nginx
+      context: ./online_shop/docker/nginx
+    restart: always
+    volumes:
+      - static_volume:/app/online_shop/static
+      - media_volume:/app/online_shop/media
     depends_on:
-      - worker
+      - app
     ports:
       - "80:80"
+    networks:
+      - custom
 
 
 volumes:

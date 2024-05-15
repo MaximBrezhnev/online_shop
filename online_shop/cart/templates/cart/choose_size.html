@@ -1,17 +1,17 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container choose-size">
-<h3>Выберите размер для добавления в корзину:</h3>
-    <div class="buttons">
-    {% for s in sizes %}
-    <form action="{% url 'choose_size' %}" method="get">
-        <input type="hidden" name="user_id" value="{{ user_id }}">
-        <input type="hidden" name="product_id" value="{{ product_id }}">
-        <input type="hidden" name="size" value="{{ s }}">
-        <button>{{ s }}</button>
-    </form>
-    {% endfor %}
+    <div class="container choose-size">
+        <h3>Выберите размер для добавления в корзину:</h3>
+        <div class="buttons">
+            {% for s in sizes %}
+                <form action="{% url 'choose_size' %}" method="get">
+                    <input type="hidden" name="user_id" value="{{ user_id }}">
+                    <input type="hidden" name="product_id" value="{{ product_id }}">
+                    <input type="hidden" name="size" value="{{ s }}">
+                    <button>{{ s }}</button>
+                </form>
+            {% endfor %}
+        </div>
     </div>
-</div>
 {% endblock %}

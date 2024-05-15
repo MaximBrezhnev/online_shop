@@ -9,8 +9,5 @@ class SearchForm(forms.Form):
                 "class": "search-input",
                 "placeholder": "Введите запрос",
             }
-        )
+        ),
     )
-
-
-

@@ -1,26 +1,26 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header bg-dark text-white">
-                    <h5 class="mb-0 text-center">Профиль</h5>
-                </div>
-                <div class="card-body">
-                    <form class="text-center">
-                        {% for f in form %}
-                        <p><label class="form-label" for="{{ f.id_for_label }}">{{ f.label }}: </label>{{ f }}</p>
-                        {% endfor %}
-                    </form>
-                    <div class="profile text-center">
-                    <a href="{% url 'users:password_change' %}">Сменить пароль</a>
-                    <a href="{% url 'users:logout' %}">Выйти</a>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-dark text-white">
+                        <h5 class="mb-0 text-center">Профиль</h5>
+                    </div>
+                    <div class="card-body">
+                        <form class="text-center">
+                            {% for f in form %}
+                                <p><label class="form-label" for="{{ f.id_for_label }}">{{ f.label }}: </label>{{ f }}</p>
+                            {% endfor %}
+                        </form>
+                        <div class="profile text-center">
+                            <a href="{% url 'users:password_change' %}">Сменить пароль</a>
+                            <a href="{% url 'users:logout' %}">Выйти</a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 {% endblock %}

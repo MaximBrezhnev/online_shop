@@ -1,76 +1,76 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<body>
+    <body>
 
-{% if products_in_cart %}
-<div class="container mt-4">
-    <div class="row align-items-center justify-content-between mb-3">
-        <h1 class="col-md-auto mb-0">Корзина</h1>
-    </div>
-    <div class="row align-items-center justify-content-between mb-3">
-    <div class="cart col-md-auto">
-        <a href="{% url 'checkout' %}">
-            Перейти к оформлению
-        </a>
-    </div>
-    </div>
-    <hr>
-      <div class="row">
-      {% for p in products_in_cart %}
-      <div class="col-md-4 products-in-cart">
-        <a href="{{ p.product.get_absolute_url }}" style="text-decoration: none; font-weight: normal;" onmouseout="this.style.fontWeight='normal'">
-        <div class="product-card-in-cart">
-          <img src="{{ p.product.photo.url }}" alt="{{ p.product.name }}">
-          <p class="font-weight-bold">{{ p.product.name }}</p>
-            {% if p.size %}
-            <p>Размер: {{p.size}}</p>
-            {% else %}
-            <p>Размер: -</p>
-            {% endif %}
-          <p>{{ p.product.price }}</p>
-
-          <div class="buttons">
-            <form action="{% url 'increase' %}" method="GET">
-                    <input type="hidden" name="product_id" value="{{ p.product_id }}">
-                    <input type="hidden" name="user_id" value="{{ p.user_id }}">
-                    {% if p.size %}
-                    <input type="hidden" name="size" value="{{ p.size }}">
-                    {% endif %}
-                    <button type="submit">+</button>
-                </form>
-              <span>{{ p.number }}</span>
-            <form action="{% url 'reduce' %}" method="GET">
-                    <input type="hidden" name="product_id" value="{{ p.product_id }}">
-                    <input type="hidden" name="user_id" value="{{ p.user_id }}">
-                    {% if p.size %}
-                    <input type="hidden" name="size" value="{{ p.size }}">
-                    {% endif %}
-                    <button type="submit">-</button>
-                </form>
-
-                <form action="{% url 'remove_from_cart' %}" method="GET">
-                    <input type="hidden" name="product_id" value="{{ p.product_id }}">
-                    <input type="hidden" name="user_id" value="{{ p.user_id }}">
-                    {% if p.size %}
-                    <input type="hidden" name="size" value="{{ p.size }}">
-                    {% endif %}
-                    <button type="submit">Удалить</button>
-                </form>
+        {% if products_in_cart %}
+            <div class="container mt-4">
+                <div class="row align-items-center justify-content-between mb-3">
+                    <h1 class="col-md-auto mb-0">Корзина</h1>
                 </div>
-                </a>
-        </div>
-      </div>
-      {% endfor %}
-    </div>
-    {% include 'pagination.html' %}
-</div>
-{% else %}
-<div class="empty-cart-message">
-    <h2>Корзина пуста</h2>
-    <a href="{% url 'home' %}">На главную</a>
-</div>
-{% endif %}
+                <div class="row align-items-center justify-content-between mb-3">
+                    <div class="cart col-md-auto">
+                        <a href="{% url 'checkout' %}">
+                            Перейти к оформлению
+                        </a>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    {% for p in products_in_cart %}
+                        <div class="col-md-4 products-in-cart">
+                            <a href="{{ p.product.get_absolute_url }}" style="text-decoration: none; font-weight: normal;" onmouseout="this.style.fontWeight='normal'">
+                                <div class="product-card-in-cart">
+                                    <img src="{{ p.product.photo.url }}" alt="{{ p.product.name }}">
+                                    <p class="font-weight-bold">{{ p.product.name }}</p>
+                                    {% if p.size %}
+                                        <p>Размер: {{p.size}}</p>
+                                    {% else %}
+                                        <p>Размер: -</p>
+                                    {% endif %}
+                                    <p>{{ p.product.price }}</p>
 
-</body>
+                                    <div class="buttons">
+                                        <form action="{% url 'increase' %}" method="GET">
+                                            <input type="hidden" name="product_id" value="{{ p.product_id }}">
+                                            <input type="hidden" name="user_id" value="{{ p.user_id }}">
+                                            {% if p.size %}
+                                                <input type="hidden" name="size" value="{{ p.size }}">
+                                            {% endif %}
+                                            <button type="submit">+</button>
+                                        </form>
+                                        <span>{{ p.number }}</span>
+                                        <form action="{% url 'reduce' %}" method="GET">
+                                            <input type="hidden" name="product_id" value="{{ p.product_id }}">
+                                            <input type="hidden" name="user_id" value="{{ p.user_id }}">
+                                            {% if p.size %}
+                                                <input type="hidden" name="size" value="{{ p.size }}">
+                                            {% endif %}
+                                            <button type="submit">-</button>
+                                        </form>
+
+                                        <form action="{% url 'remove_from_cart' %}" method="GET">
+                                            <input type="hidden" name="product_id" value="{{ p.product_id }}">
+                                            <input type="hidden" name="user_id" value="{{ p.user_id }}">
+                                            {% if p.size %}
+                                                <input type="hidden" name="size" value="{{ p.size }}">
+                                            {% endif %}
+                                            <button type="submit">Удалить</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+                {% include 'pagination.html' %}
+            </div>
+        {% else %}
+            <div class="empty-cart-message">
+                <h2>Корзина пуста</h2>
+                <a href="{% url 'home' %}">На главную</a>
+            </div>
+        {% endif %}
+
+    </body>
 {% endblock %}

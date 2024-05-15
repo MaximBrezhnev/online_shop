@@ -1,56 +1,56 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-3" id="sidebar">
-            <div class="sidebar">
-                <p class="ordering font-weight-bold">Упорядочить по:</p>
-                <div class="buttons">
-                    <a href="?sort=price_asc">
-                        <button>Возрастанию цены</button>
-                    </a>
-                    <a href="?sort=price_desc">
-                        <button>Убыванию цены</button>
-                    </a>
-                    <a href="?sort=date">
-                        <button>Новизне</button>
-                    </a>
-                </div>
-
-                <hr>
-
-                <ul class="list-unstyled">
-                    {% for s in subcategories %}
-                    <li>
-                        <a href="{{s.slug}}/" class="subcategory"
-                           style="text-decoration: none; font-weight: normal; color:black;"
-                           onmouseover="this.style.fontWeight='bold'"
-                           onmouseout="this.style.fontWeight='normal'">
-                            {{ s }}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3" id="sidebar">
+                <div class="sidebar">
+                    <p class="ordering font-weight-bold">Упорядочить по:</p>
+                    <div class="buttons">
+                        <a href="?sort=price_asc">
+                            <button>Возрастанию цены</button>
                         </a>
-                    </li>
+                        <a href="?sort=price_desc">
+                            <button>Убыванию цены</button>
+                        </a>
+                        <a href="?sort=date">
+                            <button>Новизне</button>
+                        </a>
+                    </div>
+
+                    <hr>
+
+                    <ul class="list-unstyled">
+                        {% for s in subcategories %}
+                            <li>
+                                <a href="{{s.slug}}/" class="subcategory"
+                                   style="text-decoration: none; font-weight: normal; color:black;"
+                                   onmouseover="this.style.fontWeight='bold'"
+                                   onmouseout="this.style.fontWeight='normal'">
+                                    {{ s }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-md-9 products-by-category">
+                <div class="row">
+                    {% for p in products %}
+                        <div class="col-md-4">
+                            <a href="{{ p.get_absolute_url }}" style="text-decoration: none; font-weight: normal;" onmouseout="this.style.fontWeight='normal'">
+                                <div class="product-card">
+                                    <img src="{{ p.photo.url }}" alt="{{ p.name }}">
+                                    <p class="font-weight-bold">{{ p.name }}</p>
+                                    <p>{{ p.price }}</p>
+                                </div>
+                            </a>
+                        </div>
                     {% endfor %}
-                </ul>
+                </div>
             </div>
         </div>
-
-        <div class="col-md-9 products-by-category">
-            <div class="row">
-                {% for p in products %}
-                <div class="col-md-4">
-                <a href="{{ p.get_absolute_url }}" style="text-decoration: none; font-weight: normal;" onmouseout="this.style.fontWeight='normal'">
-                <div class="product-card">
-                <img src="{{ p.photo.url }}" alt="{{ p.name }}">
-                <p class="font-weight-bold">{{ p.name }}</p>
-                <p>{{ p.price }}</p>
-                </div>
-                </a>
-                </div>
-                {% endfor %}
-            </div>
-            </div>
+        {% include 'pagination.html' %}
     </div>
-    {% include 'pagination.html' %}
-</div>
 {% endblock %}

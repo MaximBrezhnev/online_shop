@@ -1,23 +1,19 @@
 import uuid
 from http import HTTPStatus
-from unittest.mock import patch, Mock
+from unittest.mock import patch
 
 from django.contrib.auth import get_user_model
 from django.contrib.sessions.backends.db import SessionStore
-from django.contrib.sessions.middleware import SessionMiddleware
+from django.test import RequestFactory
 from django.test import TestCase
 from django.urls import reverse
-
-from users.forms import RegisterForm, UserPasswordChangeForm
-from django.test import RequestFactory
-
+from users.forms import RegisterForm
+from users.forms import UserPasswordChangeForm
 from users.views import UserPasswordChangeView
 
 
 class LogoutTestCase(TestCase):
-    fixtures = [
-        "fixtures/users_user.json"
-    ]
+    fixtures = ["fixtures/users_user.json"]
 
     def test_logout(self):
         user = get_user_model().objects.get(pk=2)
@@ -31,9 +27,7 @@ class LogoutTestCase(TestCase):
 
 
 class LoginTestCase(TestCase):
-    fixtures = [
-        "fixtures/users_user.json"
-    ]
+    fixtures = ["fixtures/users_user.json"]
 
     def test_get_login_form(self):
         response = self.client.get(reverse("users:login"))
@@ -46,19 +40,13 @@ class LoginTestCase(TestCase):
     def test_login_with_incorrect_credentials(self):
         data = [
             (
-                {
-                    "email": "user1@mail.ru",
-                    "password": "1234"
-                },
-                ["Неверный адрес электронной почты или пароль"]
+                {"email": "user1@mail.ru", "password": "1234"},
+                ["Неверный адрес электронной почты или пароль"],
             ),
             (
-                {
-                    "email": "incorrect_email@mail.ru",
-                    "password": "1234"
-                },
-                ["Неверный адрес электронной почты или пароль"]
-            )
+                {"email": "incorrect_email@mail.ru", "password": "1234"},
+                ["Неверный адрес электронной почты или пароль"],
+            ),
         ]
 
         for case in data:
@@ -70,17 +58,11 @@ class LoginTestCase(TestCase):
                 self.assertEqual(response.status_code, HTTPStatus.OK)
                 self.assertTemplateUsed(response, "users/login.html")
                 self.assertEqual(response.context["title"], "Вход")
-                self.assertEqual(
-                    response.context["form"].non_field_errors(),
-                    expected
-                )
+                self.assertEqual(response.context["form"].non_field_errors(), expected)
 
     def test_login_with_correct_credentials(self):
 
-        data = {
-            "email": "user1@mail.ru",
-            "password": "some_password"
-        }
+        data = {"email": "user1@mail.ru", "password": "some_password"}
 
         response = self.client.post(reverse("users:login"), data)
 
@@ -89,9 +71,7 @@ class LoginTestCase(TestCase):
 
 
 class RegistrationTestCase(TestCase):
-    fixtures = [
-        "fixtures/users_user.json"
-    ]
+    fixtures = ["fixtures/users_user.json"]
 
     def test_get_register_form(self):
         response = self.client.get(reverse("users:registration"))
@@ -113,23 +93,25 @@ class RegistrationTestCase(TestCase):
         data = {
             "email": "user_n@mail.ru",
             "password1": "some_password",
-            "password2": "some_password"
+            "password2": "some_password",
         }
         response = self.client.post(reverse("users:registration"), data)
 
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
         self.assertRedirects(response, reverse("users:email_was_sent"))
 
-        self.assertTrue(get_user_model().objects.filter(
-            email=data["email"], is_active=False
-        ).exists())
+        self.assertTrue(
+            get_user_model()
+            .objects.filter(email=data["email"], is_active=False)
+            .exists()
+        )
 
     @patch("django.core.cache.cache.set")
     def test_set_cache(self, mock_set):
         data = {
             "email": "user_n@mail.ru",
             "password1": "some_password",
-            "password2": "some_password"
+            "password2": "some_password",
         }
         self.client.post(reverse("users:registration"), data)
         mock_set.assert_called()
@@ -143,27 +125,20 @@ class RegistrationTestCase(TestCase):
         )
         mock_get.return_value = {"user_id": user.pk}
         response = self.client.get(
-            reverse(
-                "users:register_confirm",
-                kwargs={"token": uuid.uuid4().hex}
-            )
+            reverse("users:register_confirm", kwargs={"token": uuid.uuid4().hex})
         )
 
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
         self.assertRedirects(response, reverse("home"))
-        self.assertTrue(get_user_model().objects.filter(
-            email=user.email,
-            is_active=True
-        ).exists())
+        self.assertTrue(
+            get_user_model().objects.filter(email=user.email, is_active=True).exists()
+        )
 
     @patch("django.core.cache.cache.get")
     def test_register_confirm_when_user_not_in_cache(self, mock_get):
         mock_get.return_value = None
         response = self.client.get(
-            reverse(
-                "users:register_confirm",
-                kwargs={"token": uuid.uuid4().hex}
-            )
+            reverse("users:register_confirm", kwargs={"token": uuid.uuid4().hex})
         )
 
         self.assertEqual(response.status_code, HTTPStatus.OK)
@@ -172,15 +147,15 @@ class RegistrationTestCase(TestCase):
 
 
 class ProfileTestCase(TestCase):
-    fixtures = [
-        "fixtures/users_user.json"
-    ]
+    fixtures = ["fixtures/users_user.json"]
 
     def test_profile(self):
         user_id = 2
         user = get_user_model().objects.get(pk=user_id)
         self.client.force_login(user)
-        response = self.client.get(reverse("users:profile", kwargs={"user_id": user_id}))
+        response = self.client.get(
+            reverse("users:profile", kwargs={"user_id": user_id})
+        )
         context = response.context
 
         self.assertEqual(response.status_code, HTTPStatus.OK)
@@ -191,19 +166,18 @@ class ProfileTestCase(TestCase):
 
     def test_profile_without_auth(self):
         user_id = 2
-        response = self.client.get(reverse("users:profile", kwargs={"user_id": user_id}))
+        response = self.client.get(
+            reverse("users:profile", kwargs={"user_id": user_id})
+        )
 
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
         self.assertRedirects(
-            response,
-            reverse("users:login") + "?next=/users/profile/2"
+            response, reverse("users:login") + "?next=/users/profile/2"
         )
 
 
 class UserPasswordChangeTestCase(TestCase):
-    fixtures = [
-        "fixtures/users_user.json"
-    ]
+    fixtures = ["fixtures/users_user.json"]
 
     def setUp(self):
         user_id = 2
@@ -211,9 +185,11 @@ class UserPasswordChangeTestCase(TestCase):
         self.client.force_login(self.user)
 
     def test_get_password_change_form(self):
-        response = self.client.get(reverse(
-            "users:password_change",
-        ))
+        response = self.client.get(
+            reverse(
+                "users:password_change",
+            )
+        )
         context = response.context
 
         self.assertEqual(response.status_code, HTTPStatus.OK)
@@ -239,7 +215,7 @@ class UserPasswordChangeTestCase(TestCase):
 
         self.assertEqual(
             form.error_messages["password_incorrect"],
-            "Ваш старый пароль введен неправильно. Пожалуйста, введите его снова."
+            "Ваш старый пароль введен неправильно. Пожалуйста, введите его снова.",
         )
 
     def test_mismatched_passwords(self):
@@ -259,8 +235,7 @@ class UserPasswordChangeTestCase(TestCase):
         self.assertFalse(form.is_valid())
 
         self.assertEqual(
-            form.error_messages["password_mismatch"],
-            "Введенные пароли не совпадают."
+            form.error_messages["password_mismatch"], "Введенные пароли не совпадают."
         )
 
     def test_change_password(self):
@@ -273,7 +248,7 @@ class UserPasswordChangeTestCase(TestCase):
         data = {
             "old_password": "some_password",
             "new_password1": "new_password",
-            "new_password2": "new_password"
+            "new_password2": "new_password",
         }
 
         request_factory = RequestFactory()
@@ -282,8 +257,10 @@ class UserPasswordChangeTestCase(TestCase):
         request.user = user
         session = SessionStore()
         request.session = session
-        request.session['_auth_user_id'] = user.pk
-        request.session['_auth_user_backend'] = 'django.contrib.auth.backends.ModelBackend'
+        request.session["_auth_user_id"] = user.pk
+        request.session[
+            "_auth_user_backend"
+        ] = "django.contrib.auth.backends.ModelBackend"
         request.session.save()
         request._dont_enforce_csrf_checks = True
 
@@ -303,18 +280,14 @@ class ResetPasswordTestCase(TestCase):
         self.assertTemplateUsed("users/password_reset.html")
 
     def test_password_reset_post_form(self):
-        data = {
-            "email": "user1@mail.ru"
-        }
+        data = {"email": "user1@mail.ru"}
         response = self.client.post(reverse("users:password_reset"), data)
 
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
         self.assertRedirects(response, reverse("users:password_reset_done"))
 
     def test_password_reset_done(self):
-        data = {
-            "email": "user1@mail.ru"
-        }
+        data = {"email": "user1@mail.ru"}
         response = self.client.post(reverse("users:password_reset"), data, follow=True)
 
         self.assertEqual(response.status_code, HTTPStatus.OK)

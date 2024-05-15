@@ -1,9 +1,8 @@
+from commerce.mixins import DisplayMixin
 from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.urls import reverse
-
-from commerce.mixins import DisplayMixin
 
 
 class ProductsInStockManager(models.Manager):
@@ -21,22 +20,27 @@ class ProductsInStockManager(models.Manager):
 class Product(DisplayMixin, models.Model):
     name = models.CharField(max_length=50, unique=True, verbose_name="Название")
     slug = models.SlugField(max_length=50, unique=True)
-    description = models.TextField(max_length=500, blank=True, null=True, verbose_name="Описание")
+    description = models.TextField(
+        max_length=500, blank=True, null=True, verbose_name="Описание"
+    )
     price = models.DecimalField(
         max_digits=8,
         decimal_places=2,
         validators=[MinValueValidator(0)],
-        verbose_name="Цена"
+        verbose_name="Цена",
     )
     photo = models.ImageField(
-        upload_to="products/%Y/%m/%d/",
-        blank=True,
-        null=True,
-        verbose_name="Фотография"
+        upload_to="products/%Y/%m/%d/", blank=True, null=True, verbose_name="Фотография"
     )
-    created_at = models.DateTimeField(auto_now_add=True, db_index=True, verbose_name="Время появления")
-    category = models.ForeignKey(to="Category", on_delete=models.PROTECT, verbose_name="Категория")
-    subcategory = models.ForeignKey(to="Subcategory", on_delete=models.PROTECT, verbose_name="Подкатегория")
+    created_at = models.DateTimeField(
+        auto_now_add=True, db_index=True, verbose_name="Время появления"
+    )
+    category = models.ForeignKey(
+        to="Category", on_delete=models.PROTECT, verbose_name="Категория"
+    )
+    subcategory = models.ForeignKey(
+        to="Subcategory", on_delete=models.PROTECT, verbose_name="Подкатегория"
+    )
 
     class Meta:
         ordering = ["-created_at"]
@@ -44,7 +48,7 @@ class Product(DisplayMixin, models.Model):
         verbose_name_plural = "Товары"
 
     def get_absolute_url(self):
-        return reverse('product', kwargs={'product_slug': self.slug})
+        return reverse("product", kwargs={"product_slug": self.slug})
 
     objects = models.Manager()
     in_stock = ProductsInStockManager()
@@ -69,7 +73,9 @@ class Subcategory(DisplayMixin, models.Model):
     def get_absolute_url(self):
         return reverse(
             "products_by_subcategory",
-            kwargs={"category_slug": self.slug, }
+            kwargs={
+                "category_slug": self.slug,
+            },
         )
 
     class Meta:
@@ -79,12 +85,12 @@ class Subcategory(DisplayMixin, models.Model):
 
 class SizeAndNumber(models.Model):
     size = models.CharField(max_length=10, blank=True, null=True, verbose_name="Размер")
-    number = models.PositiveIntegerField(verbose_name='Количество')
+    number = models.PositiveIntegerField(verbose_name="Количество")
     product = models.ForeignKey(
         to="Product",
         on_delete=models.CASCADE,
         related_name="size_and_number_set",
-        verbose_name="Товар"
+        verbose_name="Товар",
     )
 
     def __str__(self):
@@ -99,17 +105,20 @@ class SizeAndNumber(models.Model):
 
 
 class FavoriteProduct(models.Model):
-    product = models.ForeignKey(to="Product", on_delete=models.CASCADE, verbose_name="Товар")
-    user = models.ForeignKey(to=get_user_model(), on_delete=models.CASCADE, verbose_name="Пользователь")
+    product = models.ForeignKey(
+        to="Product", on_delete=models.CASCADE, verbose_name="Товар"
+    )
+    user = models.ForeignKey(
+        to=get_user_model(), on_delete=models.CASCADE, verbose_name="Пользователь"
+    )
 
     def __str__(self):
         return self.product.name
 
     class Meta:
-        unique_together = ("user", "product", )
+        unique_together = (
+            "user",
+            "product",
+        )
         verbose_name = "Товар в избранном"
         verbose_name_plural = "Избранное"
-
-
-
-

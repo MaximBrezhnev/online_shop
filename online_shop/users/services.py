@@ -1,14 +1,16 @@
 import uuid
-from typing import Optional
 
-from django.contrib.auth import authenticate, get_user_model, login
+from django.contrib.auth import authenticate
+from django.contrib.auth import get_user_model
+from django.contrib.auth import login
 from django.core.cache import cache
 from django.http import HttpRequest
 from django.shortcuts import get_object_or_404
-from django.urls import reverse_lazy, reverse
-
-from online_shop.settings import USER_CONFIRMATION_KEY, USER_CONFIRMATION_TIMEOUT
+from django.urls import reverse
 from users.forms import LoginForm
+
+from online_shop.settings import USER_CONFIRMATION_KEY
+from online_shop.settings import USER_CONFIRMATION_TIMEOUT
 
 
 def _get_user_by_form_data(form: LoginForm, request: HttpRequest) -> get_user_model():
@@ -28,10 +30,7 @@ def _login(form: LoginForm, request: HttpRequest) -> bool:
 
 
 def _create_inactive_user(email: str, password: str) -> get_user_model():
-    user = get_user_model().objects.create(
-        email=email,
-        is_active=False
-    )
+    user = get_user_model().objects.create(email=email, is_active=False)
     user.set_password(password)
     user.save()
     return user
@@ -53,7 +52,8 @@ def _create_link(request: HttpRequest, user: get_user_model()) -> str:
 
     confirm_link = request.build_absolute_uri(
         reverse(
-            "users:register_confirm", kwargs={"token": token},
+            "users:register_confirm",
+            kwargs={"token": token},
         )
     )
 
