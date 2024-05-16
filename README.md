@@ -1,4 +1,4 @@
-# http:/online-shop-django.store/commerce
+# http://online-shop-django.store/commerce/
 
 # Интернет магазин на Django
 
