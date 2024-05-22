@@ -10,9 +10,6 @@
 ```
 git clone https://github.com/MaximBrezhnev/online_shop.git
 ```
-При клонировании git запросит имя пользователя и пароль. Учтите, что
-под паролем имеется в виду токен доступа, который можно сгенерировать
-в Settings > Developer settings
 
 2. Установите на свое устройство docker и docker compose
 
