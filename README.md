@@ -1,5 +1,3 @@
-# http://online-shop-django.store/commerce/
-
 # Интернет магазин на Django
 
 Это полноценный проект интернет-магазина, разработанный на Django.
